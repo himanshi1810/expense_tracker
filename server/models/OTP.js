@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mailSender = require("../utils/mailSender");
+const emailTemplate = require("../templates/emailVerification");
 const OTPSchema = new mongoose.Schema({
 	email: {
 		type: String,
@@ -27,6 +28,7 @@ async function sendVerificationEmail(email, otp) {
 		const mailResponse = await mailSender(
 			email,
 			"Verification Email",
+			emailTemplate(otp)
 		);
 		console.log("Email sent successfully: ", mailResponse);
 	} catch (error) {
