@@ -23,7 +23,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
+    active: {
+        type: Boolean,
+        default: true,
+    },
+    approved: {
+        type: Boolean,
+        default: true,
+    },
     token: {
         type: String,
     },
