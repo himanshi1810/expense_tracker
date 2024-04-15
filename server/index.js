@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require("cors");
 const app = express();
+const userRoutes = require("./routes/User");
 const database = require("./config/database");
 const {cloudinaryConnect} = require("./config/cloudinary");
 const cookieParser = require('cookie-parser');
@@ -26,6 +27,9 @@ app.use(cors({
     origin: "*",
     credentials: true 
 }));
+
+//routes
+app.use("/api/v1/auth", userRoutes);
 
 app.listen(PORT, ()=>{
     console.log("App is listening on port number ", PORT);
