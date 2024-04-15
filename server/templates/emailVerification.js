@@ -1,5 +1,5 @@
-exports.emailVerification = (otp) => {
-    return `<!DOCTYPE html>
+const otpTemplate = (otp) => {
+	return `<!DOCTYPE html>
 	<html>
 	
 	<head>
@@ -29,10 +29,9 @@ exports.emailVerification = (otp) => {
 			}
 	
 			.message {
-				font-size: 24px;
+				font-size: 18px;
 				font-weight: bold;
 				margin-bottom: 20px;
-                color: #069e82;
 			}
 	
 			.body {
@@ -66,20 +65,21 @@ exports.emailVerification = (otp) => {
 	</head>
 	
 	<body>
-		<div class="container">
-			<div class="message">OTP Verification Email</div>
-			<div class="body">
-				<p>Dear User,</p>
-				<p>Thank you for registering with Expense Tracker. To complete your registration, please use the following OTP
-					(One-Time Password) to verify your account:</p>
-				<h2 class="highlight">${otp}</h2>
-				<p>This OTP is valid for 5 minutes. If you did not request this verification, please disregard this email.
-				Once your account is verified, you will have access to our platform and its features.</p>
-			</div>
-			<div class="support">If you have any questions or need assistance, please feel free to reach out to us at 
-                <a href="mailto:aanchalpatel4404@gmail.com">aanchalpatel4404@gmail.com</a>. We are here to help!</div>
-		</div>
+	<div class="container">
+	<div class="message">OTP Verification Email</div>
+	<div class="body">
+		<p>Dear User,</p>
+		<p>Thank you for registering with Expense Tracker. To complete your registration, please use the following OTP
+			(One-Time Password) to verify your account:</p>
+		<h2 class="highlight">${otp}</h2>
+		<p>This OTP is valid for 5 minutes. If you did not request this verification, please disregard this email.
+		Once your account is verified, you will have access to our platform and its features.</p>
+	</div>
+	<div class="support">If you have any questions or need assistance, please feel free to reach out to us at 
+		<a href="mailto:aanchalpatel4404@gmail.com">aanchalpatel4404@gmail.com</a>. We are here to help!</div>
+	</div>
 	</body>
 	
-	</html>`
-}
+	</html>`;
+};
+module.exports = otpTemplate;
