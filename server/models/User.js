@@ -37,6 +37,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    groups : [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "group"
+        }
+    ]
 },
 { timestamps: true }
    

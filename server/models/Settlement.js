@@ -17,7 +17,7 @@ const settlementSchema = new mongoose.Schema({
         ref : "user"
     },
     settleDate:{
-        type:String,
+        type:Date,
         required: true
     },
     settleAmount:{

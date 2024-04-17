@@ -42,10 +42,7 @@ const expenseSchema = new mongoose.Schema({
         type: String, 
         default: "Cash"
     },
-    expenseTotal : {
-        type: Number,
-        required: true 
-    }
+    
 },
 );
 module.exports = mongoose.model("expense",expenseSchema);

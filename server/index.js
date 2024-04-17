@@ -7,6 +7,8 @@ const database = require("./config/database");
 const {cloudinaryConnect} = require("./config/cloudinary");
 const cookieParser = require('cookie-parser');
 const fileUpload = require("express-fileupload");
+const groupRoute = require("./routes/group");
+const expenseRoutes = require("./routes/expense");
 
 require("dotenv").config();
 const PORT = process.env.PORT || 4000;
@@ -30,6 +32,9 @@ app.use(cors({
 
 //routes
 app.use("/api/v1/auth", userRoutes);
+app.use("/api/v1/group", groupRoute);
+app.use("/api/v1/expense", expenseRoutes);
+
 
 app.listen(PORT, ()=>{
     console.log("App is listening on port number ", PORT);

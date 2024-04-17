@@ -80,6 +80,8 @@ exports.signup = async(req,res) => {
 			password: hashedPassword,
 			approved: approved,
             profileImage : `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
+			groups : []
+
 		});
 
 		return res.status(200).json({

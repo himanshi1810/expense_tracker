@@ -21,10 +21,12 @@ const groupSchema = new mongoose.Schema({
 		required: true,
 		ref: "user",
     },
-    groupMembers: {
-        type: Array,
-        required: true
-    },
+    groupMembers: [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "user"
+        }
+    ],
     groupTotal: {
         type: Number, 
         default: 0
@@ -42,7 +44,7 @@ const groupSchema = new mongoose.Schema({
         required: true,
     },
     split: {
-        type: [[Number]]
+        type: Array,
     }
 },
    
