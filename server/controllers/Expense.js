@@ -133,13 +133,16 @@ exports.editExpense = async (req, res) => {
             })
         }
         let memberTo = [];
+        let updateGroup = await clearSplit(groupId, oldExpense.expenseOwner, oldExpense.expenseMembers, oldExpense.expenseAmount);
+        console.log("Removed split : ", updateGroup);
         if(!group.groupMembers.includes(owner._id)){
             return res.status(400).json({
                 success : false,
                 message : "No User exist in group"
             })
-        }else{
-            memberTo.push(owner._id)
+        }
+        if(expenseTo.includes(expenseFrom)){
+            memberTo.push(owner._id);
         }
 
         for(let member of expenseTo){
@@ -187,8 +190,7 @@ exports.editExpense = async (req, res) => {
                 expenseType : expenseType
             }
         }, {new : true})
-        console.log("Members to : ", memberTo);
-        let updateGroup = await clearSplit(groupId, oldExpense.expenseFrom, oldExpense.expenseMembers, oldExpense.expenseAmount)
+        console.log("Members to : ",);
         updateGroup = await addSplit(groupId, owner._id, memberTo, expenseAmount);
         return res.status(200).json({
             success : true,

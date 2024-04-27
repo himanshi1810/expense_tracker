@@ -305,18 +305,17 @@ exports.deleteGroup = async(req, res) => {
     }
 }
 exports.addSplit = async (groupId, splitFrom, splitTo, expenseAmount) => {
-    
-        //console.log("Split to : ",splitTo)
+        console.log("Members list : ", splitTo)  
         expenseAmount = Number(expenseAmount);
         let group = await Group.findById(groupId);
         group.groupTotal += Number(expenseAmount);
         group.split[0][splitFrom] += Number(expenseAmount);
-
         let expensePerMember = expenseAmount/splitTo.length;
         expensePerMember = Math.round((expensePerMember  + Number.EPSILON) * 100) / 100;
+        console.log("Amount per peson : ", expensePerMember);
         for(let member of splitTo){ 
             group.split[0][member] -= expensePerMember;
-            
+            console.log("Member Expense : ", group.split[0][member]);
         }
         let balance = 0;
         for(let val of Object.entries(group.split[0])){
@@ -324,7 +323,7 @@ exports.addSplit = async (groupId, splitFrom, splitTo, expenseAmount) => {
         }
         group.split[0][splitFrom] -= Number(balance);
         group.split[0][splitFrom] = Math.round((group.split[0][splitFrom]  + Number.EPSILON) * 100) / 100;
-        console.log("Group Split : ", group.split, group.split[0][splitFrom]);
+        //console.log("Group Split : ", group.split, group.split[0][splitFrom]);
         group.markModified('split');
         group = await group.save();
         return group;
@@ -332,17 +331,17 @@ exports.addSplit = async (groupId, splitFrom, splitTo, expenseAmount) => {
     
 }
 exports.clearSplit = async (groupId, splitFrom, splitTo, expenseAmount) => {
-        console.log("Split to : ", splitTo);
         let group = await Group.findById(groupId);
         expenseAmount = Number(expenseAmount);
-        group.groupTotal -= Number(expenseAmount);
+        console.log("Group Total before : ", group.groupTotal);
+        group.groupTotal = group.groupTotal - Number(expenseAmount);
         group.split[0][splitFrom] -= Number(expenseAmount);
-    
+        
         let expensePerMember = expenseAmount/splitTo.length;
         expensePerMember = Math.round((expensePerMember  + Number.EPSILON) * 100) / 100;
+       
         for(let member of splitTo){
-            group.split[0][member] += expenseAmount;
-            console.log("Member : ", member, group.split[0][member]);
+            group.split[0][member] += expensePerMember;
         }
         let balance = 0;
         for(let val of Object.entries(group.split[0])){
