@@ -1,4 +1,5 @@
 
+const { ObjectId } = require('mongoose').Types;
 const Expense = require("../models/Expense");
 const Group = require("../models/Group");
 const User = require("../models/User");
@@ -269,6 +270,193 @@ exports.viewExpense = async(req, res) => {
         return res.status(500).json({
             success : false,
             message : "Error occured while fetching expense data",
+            error : error.message
+        })
+    }
+}
+exports.viewUserExpenses = async(req, res) => {
+    try {
+        const userId = req.body.userId;
+        
+        const expenseData = await Expense.find({"expenseMembers" : userId})
+            .sort({"createdAt":-1})
+            .populate("groupId")
+            .exec();
+        if(expenseData.length==0){
+            return res.status(400).json({
+                success : false,
+                message : "Expense data not found"
+            })
+        }
+        let totalAmount = 0;
+        for(let expense of expenseData){
+            totalAmount += expense.expensePerMember;
+        }
+        return res.status(200).json({
+            success : true,
+            message : "Expense data fetched successfully",
+            data : {
+                expenseData,
+                totalAmount}
+        })
+    } catch (error) {
+        console.log("Error occured while fetching recent expense data", error);
+        return res.status(500).json({
+            success : false,
+            message : "Error occured while fetching recent expense data",
+            error : error.message
+        })
+    }
+}
+exports.viewRecentUserExpenses = async(req, res) => {
+    try {
+        const userId = req.body.userId;
+        const userData = await User.findById(userId);
+        if(!userData){
+            return res.status(400).json({
+                success : false,
+                message : "User do not exist. Please sign up again"
+            })
+        }
+        const expenseData = await Expense.find({"expenseMembers" : userId}).sort({"createdAt":-1}).limit(10).populate("groupId").exec();
+        if(expenseData.length==0){
+            return res.status(400).json({
+                success : false,
+                message : "Expense data not found"
+            })
+        }
+        let totalAmount = 0;
+        for(let expense  of expenseData){
+            totalAmount += expense.expensePerMember;
+        }
+        return res.status(200).json({
+            success : true,
+            message : "Expense data fetched successfully",
+            data : {
+                expenseData,
+                totalAmount}
+        })
+    } catch (error) {
+        console.log("Error occured while fetching recent expense data", error);
+        return res.status(500).json({
+            success : false,
+            message : "Error occured while fetching recent expense data",
+            error : error.message
+        })
+    }
+}
+exports.viewUserMonthlyExpense = async(req, res) => {
+    try {
+        const userId = req.body.userId;
+        const userData = await User.findById(userId);
+        const userIdObj = new ObjectId(userId);
+        if(!userData){
+            return res.status(400).json({
+                success : false,
+                message : "User do not exist. Please sign up again"
+            })
+        }
+        const expenseData = await Expense.aggregate([{
+            $match : {
+                expenseMembers : userIdObj
+            }
+        },{
+            $group :  {
+                _id : {
+                    month : {
+                        $month  : "$createdAt"
+                    },
+                    year : {
+                        $year : "$createdAt"
+                    }
+                }, 
+                totalExpense : {
+                    $sum : "$expensePerMember"
+                }
+            }
+        }, {
+            $sort : {"_id.month" : 1}
+        }])
+
+        if(expenseData.length==0){
+            return res.status(400).json({
+                success : false,
+                message : "Expense data not found"
+            })
+        }
+       
+        return res.status(200).json({
+            success : true,
+            message : "Expense data fetched successfully",
+            data : {
+                expenseData
+            }
+        })
+    } catch (error) {
+        console.log("Error occured while fetching Monthly expense data", error);
+        return res.status(500).json({
+            success : false,
+            message : "Error occured while fetching Monthly expense data",
+            error : error.message
+        })
+    }
+}
+exports.viewUserDailyExpense = async(req, res) => {
+    try {
+        const userId = req.body.userId;
+        const userData = await User.findById(userId);
+        const objectUserId = new ObjectId(userId);
+        if(!userData){
+            return res.status(400).json({
+                success : false,
+                message : "User do not exist. Please sign up again"
+            })
+        }
+        const expenseData = await Expense.aggregate([{
+            $match : {
+                expenseMembers : objectUserId,
+                createdAt : {
+                    $gte : new Date(new Date().setMonth(new Date().getMonth()-1)),
+                    $lt : new Date()
+                }
+            }
+        }, {
+            $group : {
+                _id : {
+                    date : {
+                        $dayOfMonth : "$createdAt"
+                    },
+                    month : {
+                        $month : "$createdAt"
+                    },
+                    year : {
+                        $year : "$createdAt"
+                    }
+                },
+                expenseAmount : {
+                    $sum : "$expensePerMember"
+                }
+            }
+        }])
+        if(expenseData.length==0){
+            return res.status(400).json({
+                success : false,
+                message : "Expense data not found"
+            })
+        }
+
+        return res.status(200).json({
+            success : true,
+            message : "Expense data fetched successfully",
+            data : {
+                expenseData,
+            }
+        })
+    } catch (error) {
+        console.log("Error occured while fetching Monthly expense data", error);
+        return res.status(500).json({
+            success : false,
+            message : "Error occured while fetching Monthly expense data",
             error : error.message
         })
     }
