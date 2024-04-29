@@ -7,57 +7,70 @@ const { emailVerification } = require("../templates/emailVerification");
 const mailSender = require("../utils/mailSender");
 
 exports.createGroup = async (req, res) => {
-    try{
-        const {groupName, groupDescription, groupCurrency, groupOwner, groupMembers, groupType} = req.body;
+    try {
+        const { groupName, groupDescription, groupCurrency, groupOwner, groupMembers, groupType } = req.body;
+        // console.log("groupOwner:", groupOwner);
+        // console.log("groupMembers before inclusion:", groupMembers);
+
+        // Ensure uniqueness and include the group owner in the list of group members
+          // Fetch the group owner from the database
+          const groupOwnerId = await User.findById(groupOwner);
+          // Extract the email of the group owner
+          const groupOwnerEmail = groupOwnerId.email;
+        const allGroupMembers = Array.from(new Set([...groupMembers, groupOwnerEmail]));
+
+
+
+        
         let groupImage = `https://api.dicebear.com/5.x/initials/svg?seed=${groupName}`;
-        if(req.files && req.files.groupImage){
-            const image = req.files.groupImage
+        if (req.files && req.files.groupImage) {
+            const image = req.files.groupImage;
             groupImage = await imageUpload(image, process.env.FOLDER_NAME, 1000, 1000);
         }
+
         if (!groupName) {
             return res.status(400).json({
                 success: false,
                 message: "Group Name is required"
             });
         }
+
         const memberList = [];
-        const notAddedMembaers = [];
-        for (const memberEmail of groupMembers) {
+        const notAddedMembers = [];
+        for (const memberEmail of allGroupMembers) {
             const user = await User.findOne({ email: memberEmail });
             if (!user) {
                 const confirmationTemplate = confirmationEmail(groupOwner, groupName, "http://gmail.com");
                 const mail = await mailSender(memberEmail, "Confirmation Email", confirmationTemplate);
-                notAddedMembaers.push(user);
+                notAddedMembers.push(memberEmail);
             } else {
                 memberList.push(user._id);
             }
         }
 
-        for(let groupMember of memberList){
-            console.log(groupMember)
-        }
-        let split = []
+        let split = [];
         split[0] = {};
-        for(let groupMember of memberList){
+        for (let groupMember of memberList) {
             split[0][groupMember] = Number(0);
         }
 
         const groupData = {
-            groupName : groupName,
-            groupDescription : groupDescription,
-            groupCurrency : "INR",
-            groupOwner : groupOwner,
-            groupMembers : memberList,
-            groupTotal : 0,
-            groupType : groupType,
-            createdAt : Date.now(),
-            groupImage : groupImage,
-            split : split
+            groupName: groupName,
+            groupDescription: groupDescription,
+            groupCurrency: "INR",
+            groupOwner: groupOwner,
+            groupMembers: memberList,
+            groupTotal: 0,
+            groupType: groupType,
+            createdAt: Date.now(),
+            groupImage: groupImage,
+            split: split
         }
-        const newGroup = (await Group.create(groupData));
-        //newGroup = await newGroup.populate("groupMembers").execPopulate();
+
+        const newGroup = await Group.create(groupData);
+
         for (const groupMember of memberList) {
-            const UserUpdate = await User.findOneAndUpdate({ _id: groupMember },
+            const userUpdate = await User.findOneAndUpdate({ _id: groupMember },
                 {
                     $push: {
                         groups: newGroup._id
@@ -66,21 +79,22 @@ exports.createGroup = async (req, res) => {
         }
 
         return res.status(200).json({
-            success : true,
-            message : "New Group Ceated Successfully",
-            data : groupData,
-            notAddedMembaers : notAddedMembaers
-        })
+            success: true,
+            message: "New Group Created Successfully",
+            data: groupData,
+            notAddedMembers: notAddedMembers
+        });
 
-    }catch(error){
-        console.log(error)
+    } catch (error) {
+        console.error(error);
         return res.status(500).json({
-            success : false,
-            message : "Error occured while creating group",
-            error : error.message
-        })
+            success: false,
+            message: "Error occurred while creating group",
+            error: error.message
+        });
     }
 }
+
 exports.addMemberConfirmation = async (req, res) => {
     try{
         const { userId, groupId } = req.body;
