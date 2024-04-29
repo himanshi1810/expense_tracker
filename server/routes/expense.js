@@ -1,7 +1,6 @@
 const express = require("express");
 const { auth } = require("../middlewares/auth");
 const { addExpense, editExpense, viewExpense, deleteExpense, viewGroupDailyExpenses, viewGroupMonthlyExpenses, groupTotalExpense,viewUserExpenses, viewRecentUserExpenses, viewUserMonthlyExpense, viewUserDailyExpense } = require("../controllers/Expense");
-const { addExpense, editExpense, viewExpense, deleteExpense, viewUserExpenses, viewRecentUserExpenses, viewUserMonthlyExpense, viewUserDailyExpense } = require("../controllers/Expense");
 const router = express.Router();
 
 router.post("/addExpense", auth, addExpense);
