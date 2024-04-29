@@ -581,5 +581,3 @@ exports.viewUserDailyExpense = async(req, res) => {
         })
     }
 }
-
-
