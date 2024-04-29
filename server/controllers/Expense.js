@@ -244,6 +244,127 @@ exports.deleteExpense = async(req, res) => {
         })
     }
 }
+exports.viewGroupDailyExpenses = async (req, res) => {
+    try {
+        const groupId = req.body.groupId;
+        if (!groupId) {
+            return res.status(400).json({
+                success: false,
+                message: "Group Id unavailable"
+            });
+        }
+        
+        const expenses = await Expense.find({ groupId }).select('expenseAmount createdAt').exec();
+        if (!expenses || expenses.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No expenses found for this group"
+            });
+        }
+        
+        const groupedExpenses = {};
+        expenses.forEach(expense => {
+            const date = expense.createdAt.toISOString().split('T')[0];
+            if (!groupedExpenses[date]) {
+                groupedExpenses[date] = 0;
+            }
+            groupedExpenses[date] += expense.expenseAmount;
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Group daily expenses fetched successfully",
+            data: groupedExpenses
+        });
+    } catch (error) {
+        console.log("Error occurred while fetching group daily expenses:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred while fetching group daily expenses",
+            error: error.message
+        });
+    }
+};
+exports.viewGroupMonthlyExpenses = async (req, res) => {
+    try {
+        const groupId = req.body.groupId;
+        if (!groupId) {
+            return res.status(400).json({
+                success: false,
+                message: "Group Id unavailable"
+            });
+        }
+        
+        const expenses = await Expense.find({ groupId }).select('expenseAmount createdAt').exec();
+        if (!expenses || expenses.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No expenses found for this group"
+            });
+        }
+        
+        const groupedExpenses = {};
+        expenses.forEach(expense => {
+            const date = new Date(expense.createdAt);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // January is 0 in JavaScript
+            const monthKey = `${year}-${month}`;
+            if (!groupedExpenses[monthKey]) {
+                groupedExpenses[monthKey] = 0;
+            }
+            groupedExpenses[monthKey] += expense.expenseAmount;
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Group monthly expenses fetched successfully",
+            data: groupedExpenses
+        });
+    } catch (error) {
+        console.log("Error occurred while fetching group monthly expenses:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred while fetching group monthly expenses",
+            error: error.message
+        });
+    }
+};
+exports.groupTotalExpense = async (req, res) => {
+    try {
+        const groupId = req.body.groupId;
+        if (!groupId) {
+            return res.status(400).json({
+                success: false,
+                message: "Group Id unavailable"
+            });
+        }
+        
+        const expenses = await Expense.find({ groupId }).select('expenseAmount').exec();
+        if (!expenses || expenses.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No expenses found for this group"
+            });
+        }
+        
+        const totalExpense = expenses.reduce((total, expense) => total + expense.expenseAmount, 0);
+
+        return res.status(200).json({
+            success: true,
+            message: "Group total expense fetched successfully",
+            data: {
+                totalExpense: totalExpense
+            }
+        });
+    } catch (error) {
+        console.log("Error occurred while fetching group total expense:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred while fetching group total expense",
+            error: error.message
+        });
+    }
+};
 exports.viewExpense = async(req, res) => {
     try {
         const expenseId = req.body.expenseId;
