@@ -244,6 +244,37 @@ exports.deleteExpense = async(req, res) => {
         })
     }
 }
+
+exports.viewExpense = async(req, res) => {
+    try {
+        const expenseId = req.body.expenseId;
+        if(!expenseId){
+            return res.status(400).json({
+                success : false,
+                message : "Expense Id unavalable"
+            })
+        }
+        const expense = await Expense.findById(expenseId).populate("groupId").exec();
+        if(!expense){
+            return res.status(400).json({
+                success : false,
+                message : "Expense is unavailable"
+            })
+        }
+        return res.status(200).json({
+            success : true,
+            message : "Expense data fetched successfully",
+            data : expense
+        })
+    } catch (error) {
+        console.log("Error occured while fetching expense data", error);
+        return res.status(500).json({
+            success : false,
+            message : "Error occured while fetching expense data",
+            error : error.message
+        })
+    }
+}
 exports.viewGroupDailyExpenses = async (req, res) => {
     try {
         const groupId = req.body.groupId;
@@ -365,36 +396,6 @@ exports.groupTotalExpense = async (req, res) => {
         });
     }
 };
-exports.viewExpense = async(req, res) => {
-    try {
-        const expenseId = req.body.expenseId;
-        if(!expenseId){
-            return res.status(400).json({
-                success : false,
-                message : "Expense Id unavalable"
-            })
-        }
-        const expense = await Expense.findById(expenseId).populate("groupId").exec();
-        if(!expense){
-            return res.status(400).json({
-                success : false,
-                message : "Expense is unavailable"
-            })
-        }
-        return res.status(200).json({
-            success : true,
-            message : "Expense data fetched successfully",
-            data : expense
-        })
-    } catch (error) {
-        console.log("Error occured while fetching expense data", error);
-        return res.status(500).json({
-            success : false,
-            message : "Error occured while fetching expense data",
-            error : error.message
-        })
-    }
-}
 exports.viewUserExpenses = async(req, res) => {
     try {
         const userId = req.body.userId;
