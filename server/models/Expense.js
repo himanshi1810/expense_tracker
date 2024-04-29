@@ -30,10 +30,10 @@ const expenseSchema = new mongoose.Schema({
 		required: true,
 		ref: "user"
     },
-    expenseMembers: {
-        type: Array,
-        required: true
-    },
+    expenseMembers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }],
     expensePerMember: {
         type: Number,
         required: true
