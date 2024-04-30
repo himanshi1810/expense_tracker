@@ -10,3 +10,11 @@ export const groupEndPoints = {
     MAKE_SETTLEMENT_API : BASE_URL + "/group/makeSettlement",
     BALANCE_SHEET_API : BASE_URL + "/group/balanceSheet"
 }
+export const endpoints = {
+    SENDOTP_API: BASE_URL + "/auth/sendotp",
+    SIGNUP_API: BASE_URL + "/auth/signup",
+    LOGIN_API: BASE_URL + "/auth/login",
+    RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
+    RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
+  }
+  
