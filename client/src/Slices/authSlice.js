@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "react-redux";
 
 const initialState = {
   signupData: null,
