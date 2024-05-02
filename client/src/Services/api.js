@@ -18,3 +18,17 @@ export const endpoints = {
     RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
   }
   
+export const expenseEndPoints = {
+    ADD_EXPENSE_API : BASE_URL + "/expense/addExpense",
+    UPDATE_EXPENSE_API : BASE_URL + "/expense/updateExpense",
+    VIEW_EXPENSE_API : BASE_URL + "/expense/viewExpense",
+    DELETE_EXPENSE_API : BASE_URL + "/expense/deleteExpense",
+    VIEW_GROUP_DAILY_EXPENSE_API : BASE_URL + "/expense/viewGroupDailyExpenses",
+    VIEW_GROUP_MONTHLY_EXPENSE_API : BASE_URL + "/expense/viewGroupMonthlyExpenses",
+    GROUP_TOTAL_EXPENSE_API : BASE_URL + "/expense/groupTotalExpense",
+    VIEW_USER_EXPENSE_API : BASE_URL + "/expense/viewUserExpense",
+    VIEW_RECENT_USER_EXPENSE_API : BASE_URL + "/expense/viewRecentUserExpense",
+    VIEW_USER_MONTHLY_EXPENSE_API : BASE_URL + "/expense/viewUserMonthlyExpense",
+    VIEW_USER_DAILY_EXPENSE_API : BASE_URL + "/expense/viewUserDailyExpense"
+
+}
