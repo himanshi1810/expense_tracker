@@ -18,14 +18,22 @@ import AboutExpene from "./Components/Core/Dashboard/Expense/AboutExpene";
 import AboutGroup from "./Components/Core/Dashboard/Group/AboutGroup";
 import UpdateGroup from "./Components/Core/Dashboard/Group/UpdateGroup";
 import BalanceSheet from "./Components/Core/Dashboard/Group/BalanceSheet";
+import About from "./Pages/About";
+import ContactUs from "./Pages/ContactUs";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {user} =  useSelector((state) => state.profile);
   return (
+<<<<<<< Updated upstream
     <div className="w-screen min-h-screen bg-black flex flex-col font-poppins">
+=======
+    <div className="w-screen min-h-screen bg-black-400 font-inter flex flex-col">
+>>>>>>> Stashed changes
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
+        <Route path="/about" element={<About></About>}></Route>
+        <Route path="/contactUs" element={<ContactUs></ContactUs>}></Route>
         <Route path="/signup" element={<SignUp setIsLoggedIn={setIsLoggedIn}></SignUp>}></Route>
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}></Login>}></Route>
         <Route path="/forgotPassword" element={<ForgotPassword></ForgotPassword>}></Route>
