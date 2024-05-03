@@ -1,19 +1,12 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-<<<<<<< Updated upstream
-      fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
+      maxWidth: {
+        maxContent: "1260px",
+        maxContentTab: "650px"
       },
-      colors: {
-        black: '#0b0d10',
-        grey: {
-          '100': '#8d8d8d',
-        },
-        white: '#fdfdfd',
-        primary: '#5c85e7',
-=======
       colors: {
         white: "#FFFFFF",
         black: "#000000",
@@ -74,7 +67,7 @@ module.exports = {
         inter: ["Inter", "sans-serif"],
         "edu-sa": ["Edu SA Beginner", "cursive"],
         mono: ["Roboto Mono", "monospace"],
->>>>>>> Stashed changes
+
       },
       maxWidth: {
         maxContent: "1260px",

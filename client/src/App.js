@@ -24,11 +24,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {user} =  useSelector((state) => state.profile);
   return (
-<<<<<<< Updated upstream
     <div className="w-screen min-h-screen bg-black flex flex-col font-poppins">
-=======
-    <div className="w-screen min-h-screen bg-black-400 font-inter flex flex-col">
->>>>>>> Stashed changes
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
