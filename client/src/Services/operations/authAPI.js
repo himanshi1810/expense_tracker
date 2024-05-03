@@ -1,8 +1,8 @@
-import { toast } from "react-toastify"
+import { toast } from "react-hot-toast"
 import { setUser } from "../../Reducer/Slices/profileSlice"
 import { setLoading, setToken } from "../../Reducer/Slices/authSlice"
 import { apiConnector } from "../apiConnector"
-import { endpoints } from "../apis"
+import { endpoints } from "../api"
 
 const {
     SENDOTP_API,
@@ -30,10 +30,11 @@ const {
         }
   
         toast.success("OTP Sent Successfully")
-        navigate("/verify-email")
+        navigate("/emailVerification")
       } catch (error) {
         console.log("SENDOTP API ERROR............", error)
-        toast.error("Could Not Send OTP")
+          toast.error("You are Already Registered or Somethingelse Please Try later")
+      
       }
       dispatch(setLoading(false))
       toast.dismiss(toastId)
