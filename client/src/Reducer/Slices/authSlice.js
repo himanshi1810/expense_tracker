@@ -9,7 +9,7 @@ const initialState = {
 
 
 const authSlice = createSlice({
-    name:"expense",
+    name:"auth",
     initialState: initialState,
     reducers: {
       setSignupData(state, value) {

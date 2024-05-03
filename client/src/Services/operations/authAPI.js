@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
-import { setUser } from "../../Slices/profileSlice"
-import { setLoading, setToken } from "../../Slices/authSlice"
+import { setUser } from "../../Reducer/Slices/profileSlice"
+import { setLoading, setToken } from "../../Reducer/Slices/authSlice"
 import { apiConnector } from "../apiConnector"
 import { endpoints } from "../apis"
 
