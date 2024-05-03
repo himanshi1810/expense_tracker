@@ -3,7 +3,7 @@ import "./App.css";
 import { useSelector } from "react-redux";
 import Navbar from "./Components/Common/Navbar";
 import { Route, Routes } from "react-router-dom";
-import Home from "./Pages/home";
+import Home from "./Pages/Home";
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import ForgotPassword from "./Pages/ForgotPassword";
@@ -11,7 +11,7 @@ import ChangePassword from "./Pages/ChangePassword";
 import EmailVerificarion from "./Pages/EmailVerificarion";
 import PrivateRoute from "./Components/Core/Auth/PrivateRoute";
 import Dashboard from "./Pages/Dashboard";
-import AboutUser from "./Components/Core/Dashboard/AboutUser";
+import AboutUser from "./Components/Core/Dashboard/User/AboutUser";
 import Group from "./Components/Core/Dashboard/Group/Group";
 import Settings from "./Components/Core/Dashboard/User/Settings";
 import AboutExpene from "./Components/Core/Dashboard/Expense/AboutExpene";
@@ -22,7 +22,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {user} =  useSelector((state) => state.profile);
   return (
-    <div>
+    <div className="w-screen min-h-screen bg-black flex flex-col font-poppins">
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
@@ -36,6 +36,7 @@ function App() {
             <Dashboard></Dashboard>
           </PrivateRoute>
         }>
+          <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
           <Route path="/dashboard/aboutUser" element={<AboutUser></AboutUser>}></Route>
           <Route path="/dashboard/group" element={<Group></Group>}></Route>
           <Route path="/dashboard/settings" element={<Settings></Settings>}></Route>

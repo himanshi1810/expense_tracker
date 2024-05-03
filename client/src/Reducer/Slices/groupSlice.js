@@ -1,5 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit"
-import { updateGroup } from "../Services/operations/group";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     group: localStorage.getItem("group") ? JSON.parse(localStorage.getItem("group")) : null,
@@ -7,20 +6,21 @@ const initialState = {
 };
 
 const groupSlice = createSlice({
-    name:"group",
+    name: "group",
     initialState: initialState,
     reducers: {
-        setGroup : (state, action) => {
-            state.group = action.payload
+        setGroup: (state, action) => {
+            state.group = action.payload;
         },
-        updateGroup : (state, action) => {
-            state.group = action.group
+        // Rename the updateGroup action to avoid conflict
+        setUpdatedGroup: (state, action) => {
+            state.group = action.payload;
         },
         setLoading: (state, action) => {
-            state.loading = action.payload
+            state.loading = action.payload;
         }
     },
 });
 
-export const {setGroup, updateGroup, setLoading} = groupSlice.actions;
+export const { setGroup, setUpdatedGroup, setLoading } = groupSlice.actions;
 export default groupSlice.reducer;
