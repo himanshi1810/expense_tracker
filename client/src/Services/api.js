@@ -1,4 +1,4 @@
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 export const groupEndPoints = {
     CREATE_GROUP_API : BASE_URL + "/group/createGroup",
@@ -11,11 +11,11 @@ export const groupEndPoints = {
     BALANCE_SHEET_API : BASE_URL + "/group/balanceSheet"
 }
 export const endpoints = {
-    SENDOTP_API: "http://localhost:3000/api/v1/auth/sendotp",
-    SIGNUP_API: "http://localhost:3000/api/v1/auth/signup",
-    LOGIN_API: "http://localhost:3000/api/v1/auth/login",
-    RESETPASSTOKEN_API: "http://localhost:3000/api/v1/auth/reset-password-token",
-    RESETPASSWORD_API:  "http://localhost:3000/api/v1/auth/reset-password",
+    SENDOTP_API: BASE_URL + "/auth/sendotp",
+    SIGNUP_API: BASE_URL + "/auth/signup",
+    LOGIN_API: BASE_URL + "/auth/login",
+    RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
+    RESETPASSWORD_API:  BASE_URL + "/auth/reset-password",
   }
   
 export const expenseEndPoints = {

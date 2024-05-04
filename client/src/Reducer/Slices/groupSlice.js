@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    group: localStorage.getItem("group") ? JSON.parse(localStorage.getItem("group")) : null,
+    group: localStorage.getItem("expenseGroup") ? JSON.parse(localStorage.getItem("expenseGroup")) : null,
     loading: false,
 };
 
