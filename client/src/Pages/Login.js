@@ -8,7 +8,7 @@ function Login() {
       title="Welcome Back "
       title2="To Expense Tracker"
       description1="Simplify your spending, categorize transactions, and stay financially organized with ease."
-      formType="login"
+      formType="login" 
     />
   )
 }

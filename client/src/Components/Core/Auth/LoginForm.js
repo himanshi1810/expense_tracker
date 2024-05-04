@@ -44,12 +44,12 @@ function LoginForm() {
                     value={email}
                     onChange={handleOnChange}
                     placeholder="Enter email address"
-                    className="form-style w-full bg-grey-100 text-white py-2 rounded-lg px-2"
+                    className="form-style w-full bg-gray-400 text-white-100 py-2 rounded-lg px-2"
                 />
             </label>
             <label className="relative">
-                <p className="mb-1 text-[1rem] leading-[1.375rem] text-white">
-                    Password <sup className="text-white">*</sup>
+                <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
+                    Password <sup className="text-white-100">*</sup>
                 </p>
                 <input
                     required
@@ -58,7 +58,7 @@ function LoginForm() {
                     value={password}
                     onChange={handleOnChange}
                     placeholder="Enter Password"
-                    className="form-style w-full !pr-10  bg-grey-100 text-white py-2 rounded-lg px-2"
+                    className="form-style w-full !pr-10  bg-gray-400 text-white-100 py-2 rounded-lg px-2"
                 />
                 <span
                     onClick={() => setShowPassword((prev) => !prev)}
@@ -71,14 +71,14 @@ function LoginForm() {
                     )}
                 </span>
                 <Link to="/forgotPassword">
-                    <p className="mt-1 ml-auto max-w-max text-xs text-grey-100">
+                    <p className="mt-1 ml-auto max-w-max text-xs text-gray-300">
                         Forgot Password ?
                     </p>
                 </Link>
             </label>
             <button
                 type="submit"
-                className="mt-6 rounded-[8px] bg-primary py-[8px] px-[12px] font-medium text-white "
+                className="mt-6 rounded-[8px] bg-blue-400 py-[8px] px-[12px] font-bold text-white-100 "
             >
                 Login To Your Account
             </button>

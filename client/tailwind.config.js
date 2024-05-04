@@ -67,6 +67,7 @@ module.exports = {
         inter: ["Inter", "sans-serif"],
         "edu-sa": ["Edu SA Beginner", "cursive"],
         mono: ["Roboto Mono", "monospace"],
+        poppins: ["Poppins", "sans-serif"],
 
       },
       maxWidth: {

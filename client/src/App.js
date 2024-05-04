@@ -24,7 +24,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {user} =  useSelector((state) => state.profile);
   return (
-    <div className="w-screen min-h-screen bg-black flex flex-col font-poppins">
+    <div className="w-screen min-h-screen bg-black-400 flex flex-col font-poppins">
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>

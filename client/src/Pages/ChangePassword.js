@@ -40,27 +40,27 @@ function ChangePassword() {
         <div className="spinner"></div>
       ) : (
         <div className="mx-auto flex w-11/12 max-w-maxContent flex-col-reverse justify-evenly gap-y-12 py-12 md:flex-row md:gap-y-0 md:gap-x-12">
-          <div className="relative mx-auto w-11/12 max-w-[450px] md:mx-0">
+        <div className="relative mx-auto w-11/12 max-w-[450px] md:mx-0 ">
             <img
               src={img} 
               alt="logo"
               width={700}
               height={700}
               loading="lazy"
-              className="absolute -top-4 right-4 z-10"
+              className=""
             />
           </div>
           <div className="max-w-[500px] p-4 lg:p-8">
             <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-white">
               Choose new password
             </h1>
-            <p className="my-4 text-[1.125rem] leading-[1.625rem] text-grey-100">
+            <p className="my-4 text-[1.125rem] leading-[1.625rem] text-gray-400">
               Almost done. Enter your new password and youre all set.
             </p>
             <form onSubmit={handleOnSubmit}>
               <label className="relative">
-                <p className="mb-1 text-[1rem] leading-[1.375rem] text-white">
-                  New Password <sup className="text-white">*</sup>
+                <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
+                  New Password <sup className="text-white-100">*</sup>
                 </p>
                 <input
                   required
@@ -69,7 +69,7 @@ function ChangePassword() {
                   value={password}
                   onChange={handleOnChange}
                   placeholder="Enter Password"
-                  className="form-style w-full bg-grey-100 text-white py-2 rounded-lg px-2 !pr-10"
+                  className="form-style w-full bg-gray-100 text-white-100 py-2 rounded-lg px-2 !pr-10"
                 />
                 <span
                   onClick={() => setShowPassword((prev) => !prev)}
@@ -83,8 +83,8 @@ function ChangePassword() {
                 </span>
               </label>
               <label className="relative mt-3 block">
-                <p className="mb-1 text-[1rem] leading-[1.375rem] text-white">
-                  Confirm New Password <sup className="text-white">*</sup>
+                <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
+                  Confirm New Password <sup className="text-white-100">*</sup>
                 </p>
                 <input
                   required
@@ -93,7 +93,7 @@ function ChangePassword() {
                   value={confirmPassword}
                   onChange={handleOnChange}
                   placeholder="Confirm Password"
-                  className="form-style w-full bg-grey-100 text-white py-2 rounded-lg px-2 !pr-10"
+                  className="form-style w-full  bg-gray-100 text-white-100 py-2 rounded-lg px-2 !pr-10"
                 />
                 <span
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
@@ -109,7 +109,7 @@ function ChangePassword() {
 
               <button
                 type="submit"
-                className="mt-6 w-full rounded-[8px] bg-primary py-[12px] px-[12px] font-bold text-white"
+                className="mt-6 w-full rounded-[8px] bg-blue-400 py-[12px] px-[12px] font-bold text-white-100"
               >
                 Reset Password
               </button>
