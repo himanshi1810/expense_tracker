@@ -8,7 +8,7 @@ export const createGroup = async (data, token) => {
     try {
       const response = await apiConnector("POST", CREATE_GROUP_API , data, {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer${token}`,
+        Authorization: `Bearer ${token}`,
       })
       console.log("CREATE GROUP API RESPONSE............", response)
       if (!response?.data?.success) {
@@ -31,7 +31,7 @@ export const createGroup = async (data, token) => {
     const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", ADD_MEMBER_CONFIRMATION_API, data, {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
         })
         console.log("Add member with confirmation api response...............", response);
         if(!response?.data?.success){
@@ -54,7 +54,7 @@ export const createGroup = async (data, token) => {
     const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", ADD_MEMBERS, data, {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
         })
         console.log("Add member api response...............", response);
         if(!response?.data?.success){
@@ -97,7 +97,7 @@ export const createGroup = async (data, token) => {
     const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("DELETE", DELETE_GROUP_API, data, {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
         })
         console.log("Delete Group api response...............", response);
         if(!response?.data?.success){
@@ -120,7 +120,7 @@ export const createGroup = async (data, token) => {
     const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", BALANCE_SHEET_API, data, {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
         })
         console.log("Balance sheet api response...............", response);
         if(!response?.data?.success){
@@ -145,7 +145,7 @@ export const createGroup = async (data, token) => {
     try {
         const response = await apiConnector("POST", UPDATE_GROUP_API, data, {
             "Content-Type" : "multipart/form-data",
-            Authorization : `Bearer${token}`
+            Authorization : `Bearer ${token}`
         });
         console.log("Update Group Api Response...", response);
         if(!response?.data?.success){
@@ -168,7 +168,7 @@ export const createGroup = async (data, token) => {
     const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", MAKE_SETTLEMENT_API, data, {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
         })
         console.log("Make Settlement api response...............", response);
         if(!response?.data?.success){
