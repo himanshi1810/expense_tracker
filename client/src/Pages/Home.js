@@ -24,7 +24,7 @@ function Home() {
                 <div className='text-gray-400 text-[16px] w-[80%]'>
                     Sharing Expense with your friends is simpler tham ever with Expense Tracker. 
                 </div>
-                <button onClick={onClickHandler} className='bg-blue-400 self-center md:self-start text-white-100 text-[14px] mt-4 px-4 py-1 rounded-md hover:bg-black-400 hover:border hover:border-gray-400 transition-all duration-500'>Start Now</button>
+                <button onClick={onClickHandler} className='bg-blue-400 self-center md:self-start text-white-100 text-[1rem] mt-4 px-10 py-2 rounded-md hover:bg-black-400 hover:border hover:border-gray-400 transition-all duration-500'>Start Now</button>
             </div>
             <div to={token==null ? "/signup" : "/dashboard/aboutUser"}>
                 <img src={HomePageImage} className='h-[34rem]'></img>

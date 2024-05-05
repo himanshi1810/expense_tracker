@@ -104,7 +104,7 @@ function EmailVerificarion() {
                 </p>
               </Link>
               <button
-                className="flex items-center text-gray-400 gap-x-2"
+                className="flex items-center text-gray-400 gap-x-2 hover:bg-black-400 hover:border-[1px] hover:border-gray-400 transition-all duration-500"
                 onClick={() => dispatch(sendOtp(signupData.email))}
               >
                 <RxCountdownTimer />

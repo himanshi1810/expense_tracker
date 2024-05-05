@@ -60,14 +60,14 @@ function ForgotPassword() {
               )}
               <button
                 type="submit"
-                className="mt-6 w-full rounded-[8px] bg-blue-400 py-[12px] px-[12px] font-bold text-white-100"
+                className="mt-6 w-full rounded-[8px] bg-blue-400 py-[12px] px-[12px] font-bold text-white-100 hover:bg-black-400 hover:border-[1px] hover:border-gray-400 transition-all duration-500"
               >
                 {!emailSent ? "Sumbit" : "Resend Email"}
               </button>
             </form>
             <div className="mt-6 flex items-center justify-between">
               <Link to="/login">
-                <p className="flex items-center gap-x-2 text-grey-100">
+                <p className="flex items-center gap-x-2 text-grey-100 ">
                   <BiArrowBack /> Back To Login
                 </p>
               </Link>

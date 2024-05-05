@@ -41,12 +41,12 @@ function Navbar() {
           {token === null && (
             <>
               <Link to={"/signup"}>
-                <button className='bg-blue-400 text-white px-3 py-1 rounded-md text-[12px] tracking-wide hover:bg-black-400 hover:border-[1px] hover:border-gray-400 transition-all duration-500 mr-2'>
+                <button className='bg-blue-400 text-white px-3 py-1 rounded-md text-[0.875rem] tracking-wide hover:bg-black-400 hover:border-[1px] hover:border-gray-400 transition-all duration-500 mr-2'>
                   Signup
                 </button>
               </Link>
               <Link to={"/login"}>
-                <button className='bg-blue-400 text-white px-3 py-1 rounded-md text-[12px] tracking-wide hover:bg-black-400 hover:border-[1px] hover:border-gray-400 transition-all duration-500'>
+                <button className='bg-blue-400 text-white px-3 py-1 rounded-md text-[0.875rem] tracking-wide hover:bg-black-400 hover:border-[1px] hover:border-gray-400 transition-all duration-500'>
                   Login
                 </button>
               </Link>

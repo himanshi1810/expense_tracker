@@ -32,3 +32,7 @@ export const expenseEndPoints = {
     VIEW_USER_DAILY_EXPENSE_API : BASE_URL + "/expense/viewUserDailyExpense"
 
 }
+
+export const contactusEndpoint = {
+    CONTACT_US_API: BASE_URL + "/reach/contact",
+  }
