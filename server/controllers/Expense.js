@@ -7,7 +7,8 @@ const { addSplit, clearSplit } = require("./Group");
 
 exports.addExpense = async (req, res) => {
     try {
-        const {expenseName, expenseDescription, groupId, expenseFrom, expenseTo, expenseAmount, expenseType} = req.body;
+        const {expenseName, expenseDescription, groupId, expenseTo, expenseAmount, expenseType} = req.body;
+        const expenseFrom = req.user.id;
         console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription)
         if(!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription){
             return res.status(400).json({
@@ -105,7 +106,8 @@ exports.addExpense = async (req, res) => {
 }
 exports.editExpense = async (req, res) => {
     try {
-        const {expenseId, expenseName, expenseDescription, groupId, expenseFrom, expenseTo, expenseAmount, expenseType} = req.body;
+        const {expenseId, expenseName, expenseDescription, groupId, expenseTo, expenseAmount, expenseType} = req.body;
+        const expenseFrom = req.user.id;
         if(!expenseId || !expenseFrom || !groupId || !expenseTo || !expenseAmount){
             return res.status(400).json({
                 success : false,
@@ -398,9 +400,10 @@ exports.groupTotalExpense = async (req, res) => {
 };
 exports.viewUserExpenses = async(req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.user.id;
         
         const expenseData = await Expense.find({"expenseMembers" : userId})
+            .limit(10)
             .sort({"createdAt":-1})
             .populate("groupId")
             .exec();
@@ -469,7 +472,7 @@ exports.viewRecentUserExpenses = async(req, res) => {
 }
 exports.viewUserMonthlyExpense = async(req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const userData = await User.findById(userId);
         const userIdObj = new ObjectId(userId);
         if(!userData){
@@ -525,7 +528,8 @@ exports.viewUserMonthlyExpense = async(req, res) => {
 }
 exports.viewUserDailyExpense = async(req, res) => {
     try {
-        const userId = req.body.userId;
+        console.log(req.body);
+        const userId = req.user.id;
         const userData = await User.findById(userId);
         const objectUserId = new ObjectId(userId);
         if(!userData){

@@ -101,9 +101,10 @@ const {
           : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
         dispatch(setUser({ ...response.data.user, image: userImage }))
         
-        localStorage.setItem("token", JSON.stringify(response.data.token))
-        localStorage.setItem("user", JSON.stringify(response.data.user))
-        navigate("/dashboard")
+        localStorage.setItem("expenseToken", JSON.stringify(response.data.token))
+        localStorage.setItem("expenseUser", JSON.stringify(response.data.user))
+        dispatch(setLoading(false));
+        navigate("/dashboard/aboutUser")
       } catch (error) {
         console.log("LOGIN API ERROR............", error)
         toast.error("Login Failed")
@@ -116,8 +117,8 @@ const {
     return (dispatch) => {
       dispatch(setToken(null))
       dispatch(setUser(null))
-      localStorage.removeItem("token")
-      localStorage.removeItem("user")
+      localStorage.removeItem("expenseToken")
+      localStorage.removeItem("expenseUser")
       toast.success("Logged Out")
       navigate("/")
     }

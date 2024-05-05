@@ -84,11 +84,13 @@ export const deleteExpense = async (data, token) => {
 };
 
 //View Expense
-export const viewExpense = async (data) => {
+export const viewExpense = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET", VIEW_EXPENSE_API, data);
+        const response = await apiConnector("GET", VIEW_EXPENSE_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View Expense API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch expense details");
@@ -103,11 +105,13 @@ export const viewExpense = async (data) => {
 };
 
 //View Group Daily Expense
-export const viewGroupDailyExpenses = async (data) => {
+export const viewGroupDailyExpenses = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET",VIEW_GROUP_DAILY_EXPENSE_API, data);
+        const response = await apiConnector("GET",VIEW_GROUP_DAILY_EXPENSE_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View Group Daily Expenses API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch group daily expenses");
@@ -122,11 +126,13 @@ export const viewGroupDailyExpenses = async (data) => {
 };
 
 //View Group Monthly Expense 
-export const viewGroupMonthlyExpenses = async (data) => {
+export const viewGroupMonthlyExpenses = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET", VIEW_GROUP_MONTHLY_EXPENSE_API, data);
+        const response = await apiConnector("GET", VIEW_GROUP_MONTHLY_EXPENSE_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View Group Monthly Expenses API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch group monthly expenses");
@@ -141,11 +147,13 @@ export const viewGroupMonthlyExpenses = async (data) => {
 };
 
 //View Group Total Expense
-export const groupTotalExpense = async (data) => {
+export const groupTotalExpense = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET", GROUP_TOTAL_EXPENSE_API, data);
+        const response = await apiConnector("GET", GROUP_TOTAL_EXPENSE_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("Group Total Expense API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch group total expense");
@@ -160,11 +168,14 @@ export const groupTotalExpense = async (data) => {
 };
 
 //View User Expense
-export const viewUserExpense = async (data) => {
+export const viewUserExpense = async (token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
+    
     try {
-        const response = await apiConnector("POST", VIEW_USER_EXPENSE_API, data);
+        const response = await apiConnector("POST", VIEW_USER_EXPENSE_API, {}, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View User Expense API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch user expenses");
@@ -179,11 +190,13 @@ export const viewUserExpense = async (data) => {
 };
 
 //View Recent user expense
-export const viewRecentUserExpense = async (data) => {
+export const viewRecentUserExpense = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("POST", VIEW_RECENT_USER_EXPENSE_API, data);
+        const response = await apiConnector("POST", VIEW_RECENT_USER_EXPENSE_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View Recent User Expense API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch recent user expenses");
@@ -198,11 +211,13 @@ export const viewRecentUserExpense = async (data) => {
 };
 
 //View User Monthly Expense
-export const viewUserMonthlyExpense = async (data) => {
+export const viewUserMonthlyExpense = async (token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("POST", VIEW_USER_MONTHLY_EXPENSE_API, data);
+        const response = await apiConnector("POST", VIEW_USER_MONTHLY_EXPENSE_API, {}, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View User Monthly Expense API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch user monthly expenses");
@@ -217,11 +232,13 @@ export const viewUserMonthlyExpense = async (data) => {
 };
 
 //View User Daily Expense
-export const viewUserDailyExpense = async (data) => {
+export const viewUserDailyExpense = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("POST",VIEW_USER_DAILY_EXPENSE_API, data);
+        const response = await apiConnector("POST",VIEW_USER_DAILY_EXPENSE_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
         console.log("View User Daily Expense API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch user daily expenses");

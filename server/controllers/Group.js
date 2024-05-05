@@ -14,14 +14,11 @@ exports.createGroup = async (req, res) => {
 
         // Ensure uniqueness and include the group owner in the list of group members
           // Fetch the group owner from the database
-          const groupOwnerId = await User.findById(groupOwner);
+        const groupOwnerId = await User.findById(groupOwner);
           // Extract the email of the group owner
-          const groupOwnerEmail = groupOwnerId.email;
+        const groupOwnerEmail = groupOwnerId.email;
         const allGroupMembers = Array.from(new Set([...groupMembers, groupOwnerEmail]));
 
-
-
-        
         let groupImage = `https://api.dicebear.com/5.x/initials/svg?seed=${groupName}`;
         if (req.files && req.files.groupImage) {
             const image = req.files.groupImage;
@@ -47,7 +44,9 @@ exports.createGroup = async (req, res) => {
                 memberList.push(user._id);
             }
         }
-
+        // if(!memberList.includes(groupOwner)){
+        //     memberList.push(groupOwner);
+        // }
         let split = [];
         split[0] = {};
         for (let groupMember of memberList) {
