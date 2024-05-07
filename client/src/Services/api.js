@@ -8,7 +8,8 @@ export const groupEndPoints = {
     ADD_MEMBERS : BASE_URL + "/group/addMembers",
     DELETE_GROUP_API : BASE_URL + "/group/deleteGroup",
     MAKE_SETTLEMENT_API : BASE_URL + "/group/makeSettlement",
-    BALANCE_SHEET_API : BASE_URL + "/group/balanceSheet"
+    BALANCE_SHEET_API : BASE_URL + "/group/balanceSheet",
+    VIEW_USER_GROUP_API: BASE_URL + "/group/viewUserGroup"
 }
 export const endpoints = {
     SENDOTP_API: BASE_URL + "/auth/sendotp",

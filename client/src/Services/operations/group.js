@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import {groupEndPoints} from "../api";
 import { apiConnector } from "../apiConnector";
-const {CREATE_GROUP_API, ADD_MEMBER_CONFIRMATION_API, UPDATE_GROUP_API, MAKE_SETTLEMENT_API, ADD_MEMBERS, VIEW_GROUP_API, DELETE_GROUP_API, BALANCE_SHEET_API} = groupEndPoints;
+const {CREATE_GROUP_API, ADD_MEMBER_CONFIRMATION_API, VIEW_USER_GROUP_API, UPDATE_GROUP_API, MAKE_SETTLEMENT_API, ADD_MEMBERS, VIEW_GROUP_API, DELETE_GROUP_API, BALANCE_SHEET_API} = groupEndPoints;
 export const createGroup = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...")
@@ -181,6 +181,29 @@ export const createGroup = async (data, token) => {
     } catch (error) {
         toast.dismiss(toastId);
         console.log("MAKE SETTLEMENT API ERROR...", error);
+        toast.error(error.message);
+    }
+    toast.dismiss(toastId);
+    return result
+  }
+  export const viewUserGroup = async(token) => {
+    let result = null;
+    const toastId = toast.loading("Loading...");
+    try {
+        const response = await apiConnector("GET", VIEW_USER_GROUP_API, {}, {
+            Authorization: `Bearer ${token}`,
+        })
+        console.log("GET USER GROUP API RESPONSE...............", response);
+        if(!response?.data?.success){
+            throw new Error("Could not fetch user groups");
+            toast.dismiss(toastId);
+            toast.error(response?.data?.message)
+        }
+        toast.success("User Groups Fetched successfully");
+        result = response?.data
+    } catch (error) {
+        toast.dismiss(toastId);
+        console.log("FETCH USER GROUPS API ERROR...", error);
         toast.error(error.message);
     }
     toast.dismiss(toastId);
