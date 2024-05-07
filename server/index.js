@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const fileUpload = require("express-fileupload");
 const groupRoute = require("./routes/group");
 const expenseRoutes = require("./routes/expense");
+const profileRoutes = require("./routes/Profile");
 const contactRoute = require("./routes/contact");
 
 require("dotenv").config();
@@ -36,6 +37,7 @@ app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/group", groupRoute);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/reach", contactRoute);
+app.use("/api/v1/profile", profileRoutes);
 
 app.listen(PORT, ()=>{
     console.log("App is listening on port number ", PORT);
