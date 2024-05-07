@@ -4,25 +4,34 @@ const Settlement = require("../models/Settlement");
 const User = require("../models/User");
 const { confirmationEmail } = require("../templates/confirmationEmail");
 const { emailVerification } = require("../templates/emailVerification");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const mailSender = require("../utils/mailSender");
 
 exports.createGroup = async (req, res) => {
     try {
-        const { groupName, groupDescription, groupCurrency, groupOwner, groupMembers, groupType } = req.body;
-        // console.log("groupOwner:", groupOwner);
-        // console.log("groupMembers before inclusion:", groupMembers);
-
-        // Ensure uniqueness and include the group owner in the list of group members
-          // Fetch the group owner from the database
+        const { groupName, groupDescription, groupMembers, groupType } = req.body;
+        const groupOwner = req.user.id;
+       console.log("Re quest Body : ", req.body);
         const groupOwnerId = await User.findById(groupOwner);
           // Extract the email of the group owner
+          if(!groupOwnerId){
+            return res.status(400).json({
+                success : false,
+                message : "Group owner not found"
+            })
+          }
         const groupOwnerEmail = groupOwnerId.email;
-        const allGroupMembers = Array.from(new Set([...groupMembers, groupOwnerEmail]));
+        let allGroupMembers = groupMembers.split(',');
+        if(!allGroupMembers.includes(groupOwnerId.email)){
+            allGroupMembers = Array.fron(new Set([...allGroupMembers, groupOwnerId.email]))
+        }
+        console.log("All group Members", allGroupMembers);
 
         let groupImage = `https://api.dicebear.com/5.x/initials/svg?seed=${groupName}`;
+        console.log("Files : ", req.files);
         if (req.files && req.files.groupImage) {
             const image = req.files.groupImage;
-            groupImage = await imageUpload(image, process.env.FOLDER_NAME, 1000, 1000);
+            groupImage = await uploadImageToCloudinary(image, process.env.FOLDER_NAME, 1000, 1000);
         }
 
         if (!groupName) {
@@ -34,7 +43,8 @@ exports.createGroup = async (req, res) => {
 
         const memberList = [];
         const notAddedMembers = [];
-        for (const memberEmail of allGroupMembers) {
+        for (let memberEmail of allGroupMembers) {
+            console.log("Email : ", memberEmail);
             const user = await User.findOne({ email: memberEmail });
             if (!user) {
                 const confirmationTemplate = confirmationEmail(groupOwner, groupName, "http://gmail.com");
@@ -62,7 +72,7 @@ exports.createGroup = async (req, res) => {
             groupTotal: 0,
             groupType: groupType,
             createdAt: Date.now(),
-            groupImage: groupImage,
+            groupImage: groupImage.url,
             split: split
         }
 
@@ -426,6 +436,30 @@ exports.balanceSheet = async(req, res) => {
         return res.status(500).json({
             success: false,
             message: "Error while Making BalanceSheet",
+            error: error.message
+        });
+    }
+}
+exports.viewUserGroups = async(req, res) => {
+    try {
+        const userId = req.user.id;
+        const userGroups = await Group.find({groupMembers : userId}).populate('groupMembers').exec();
+        if(!userGroups){
+            return res.status(400).json({
+                success : false,
+                message : "No groups found"
+            })
+        }
+        return res.status(200).json({
+            success : true,
+            message : "Groups fetched successfully",
+            data :  userGroups
+        })
+    } catch (error) {
+        console.error("Error while fetching user groups", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error while fetching user groups",
             error: error.message
         });
     }
