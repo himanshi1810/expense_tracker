@@ -108,9 +108,10 @@ export const viewExpense = async (data, token) => {
 //View Group Daily Expense
 export const viewGroupDailyExpenses = async (data, token) => {
     let result = null;
+
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET",VIEW_GROUP_DAILY_EXPENSE_API, data, {
+        const response = await apiConnector("POST",VIEW_GROUP_DAILY_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
         });
         console.log("View Group Daily Expenses API Response...", response);
@@ -131,7 +132,8 @@ export const viewGroupMonthlyExpenses = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET", VIEW_GROUP_MONTHLY_EXPENSE_API, data, {
+        console.log("Token", token)
+        const response = await apiConnector("POST", VIEW_GROUP_MONTHLY_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
         });
         console.log("View Group Monthly Expenses API Response...", response);
@@ -257,7 +259,7 @@ export const viewGroupRecentExpense = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET", VIEW_GROUP_RECENT_EXPENSES_API, data, {
+        const response = await apiConnector("POST", VIEW_GROUP_RECENT_EXPENSES_API, data, {
             Authorization: `Bearer ${token}`,
         });
         console.log("View Group Recent Expense API Response...", response);

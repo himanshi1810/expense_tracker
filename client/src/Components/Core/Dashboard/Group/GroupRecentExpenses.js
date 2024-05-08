@@ -1,8 +1,17 @@
 import React from 'react'
+import ExpenseCard from '../../../Common/ExpenseCard'
 
-function GroupRecentExpenses() {
+function GroupRecentExpenses({recentExpenses}) {
   return (
-    <div>GroupRecentExpenses</div>
+    <div>
+      <div className='flex flex-col gap-5'>
+        {
+          recentExpenses.map((expense, index) => (
+            <ExpenseCard expense={expense} index={index}></ExpenseCard>
+          ))
+        }
+      </div>
+    </div>
   )
 }
 

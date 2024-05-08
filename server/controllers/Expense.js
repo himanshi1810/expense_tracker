@@ -1,5 +1,6 @@
 
 const { ObjectId } = require('mongoose').Types;
+const { default: mongoose } = require('mongoose');
 const Expense = require("../models/Expense");
 const Group = require("../models/Group");
 const User = require("../models/User");
@@ -279,7 +280,7 @@ exports.viewExpense = async(req, res) => {
 }
 exports.viewGroupDailyExpenses = async (req, res) => {
     try {
-        const groupId = req.body.groupId;
+        const {groupId} = req.body;
         if (!groupId) {
             return res.status(400).json({
                 success: false,
@@ -287,27 +288,43 @@ exports.viewGroupDailyExpenses = async (req, res) => {
             });
         }
         
-        const expenses = await Expense.find({ groupId }).select('expenseAmount createdAt').exec();
-        if (!expenses || expenses.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "No expenses found for this group"
-            });
-        }
-        
-        const groupedExpenses = {};
-        expenses.forEach(expense => {
-            const date = expense.createdAt.toISOString().split('T')[0];
-            if (!groupedExpenses[date]) {
-                groupedExpenses[date] = 0;
+        const expenseData = await Expense.aggregate([{
+            $match : {
+                groupId : new mongoose.Types.ObjectId(groupId),
+                createdAt : {
+                    $gte : new Date(new Date().setMonth(new Date().getMonth()-1)),
+                    $lt : new Date()
+                }
             }
-            groupedExpenses[date] += expense.expenseAmount;
-        });
+        }, {
+            $group : {
+                _id : {
+                    date : {
+                        $dayOfMonth : "$createdAt"
+                    },
+                    month : {
+                        $month : "$createdAt"
+                    },
+                    year : {
+                        $year : "$createdAt"
+                    }
+                },
+                expenseAmount : {
+                    $sum : "$expensePerMember"
+                }
+            }
+        }])
+        if(expenseData.length==0){
+            return res.status(400).json({
+                success : false,
+                message : "Expense data not found"
+            })
+        }
 
         return res.status(200).json({
             success: true,
             message: "Group daily expenses fetched successfully",
-            data: groupedExpenses
+            data: expenseData
         });
     } catch (error) {
         console.log("Error occurred while fetching group daily expenses:", error);
@@ -328,30 +345,40 @@ exports.viewGroupMonthlyExpenses = async (req, res) => {
             });
         }
         
-        const expenses = await Expense.find({ groupId }).select('expenseAmount createdAt').exec();
-        if (!expenses || expenses.length === 0) {
+        const expenseData = await Expense.aggregate([{
+            $match : {
+                groupId : new mongoose.Types.ObjectId(groupId)
+            }
+        },{
+            $group :  {
+                _id : {
+                    month : {
+                        $month  : "$createdAt"
+                    },
+                    year : {
+                        $year : "$createdAt"
+                    }
+                }, 
+                totalExpense : {
+                    $sum : "$expensePerMember"
+                }
+            }
+        }, {
+            $sort : {"_id.month" : 1}
+        }])
+
+        if(expenseData.length==0){
             return res.status(400).json({
-                success: false,
-                message: "No expenses found for this group"
-            });
+                success : false,
+                message : "Expense data not found"
+            })
         }
         
-        const groupedExpenses = {};
-        expenses.forEach(expense => {
-            const date = new Date(expense.createdAt);
-            const year = date.getFullYear();
-            const month = date.getMonth() + 1; // January is 0 in JavaScript
-            const monthKey = `${year}-${month}`;
-            if (!groupedExpenses[monthKey]) {
-                groupedExpenses[monthKey] = 0;
-            }
-            groupedExpenses[monthKey] += expense.expenseAmount;
-        });
 
         return res.status(200).json({
             success: true,
             message: "Group monthly expenses fetched successfully",
-            data: groupedExpenses
+            data: expenseData
         });
     } catch (error) {
         console.log("Error occurred while fetching group monthly expenses:", error);
