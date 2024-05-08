@@ -4,6 +4,7 @@ import MonthlyExpenseGraph from './MonthlyExpenseGraph'
 import RecentExpenses from './RecentExpenses'
 
 function AboutUser() {
+  
   return (
     <div className='flex flex-col gap-6 text-gray-400'>
       <div className='text-[22px] font-semibold text-white-100'>My Expenses</div>
