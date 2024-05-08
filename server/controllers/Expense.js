@@ -398,6 +398,31 @@ exports.groupTotalExpense = async (req, res) => {
         });
     }
 };
+exports.viewGroupRecentExpense = async(req, res) => {
+    try {
+        const {groupId} = req.body;
+        console.log("request", req);
+        const groupRecentExpense = await Expense.find({groupId:groupId}).sort({createdAt : -1}).limit(5);
+        if(groupRecentExpense.length==0){
+            return res.status(400).json({
+                success: false,
+                message: "No expenses found for this group"
+            });
+        }
+        return res.status(200).json({
+            success : true,
+            message : "Group recent expense fetched successfullt",
+            data : groupRecentExpense
+        })
+    } catch (error) {
+        console.log("Error occurred while fetching group recent:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred while fetching group recent expense",
+            error: error.message
+        });
+    }
+}
 exports.viewUserExpenses = async(req, res) => {
     try {
         const userId = req.user.id;
