@@ -79,7 +79,6 @@ export default function EditProfile() {
                 </span>
               )}
             </div>
-           
           </div>
           <div className="">
             <label>

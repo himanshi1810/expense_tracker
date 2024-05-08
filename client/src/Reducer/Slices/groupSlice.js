@@ -12,7 +12,7 @@ const groupSlice = createSlice({
         setGroup: (state, action) => {
             state.group = action.payload;
         },
-        // Rename the updateGroup action to avoid conflict
+
         setUpdatedGroup: (state, action) => {
             state.group = action.payload;
         },
