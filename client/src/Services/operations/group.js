@@ -74,14 +74,15 @@ export const createGroup = async (data, token) => {
   }
   export const viewGroup = async(data) => {
     let result = null;
+    
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("GET", VIEW_GROUP_API, data)
+        const response = await apiConnector("POST", VIEW_GROUP_API, data)
         console.log("View Group api response...............", response);
         if(!response?.data?.success){
-            throw new Error("Could not fetch group data");
             toast.dismiss(toastId);
             toast.error(response?.data?.message)
+            throw new Error("Could not fetch group data"); 
         }
         result = response?.data
     } catch (error) {
@@ -209,3 +210,4 @@ export const createGroup = async (data, token) => {
     toast.dismiss(toastId);
     return result
   }
+  

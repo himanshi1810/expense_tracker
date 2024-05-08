@@ -5,7 +5,7 @@ import { viewUserGroup } from '../../../../Services/operations/group';
 import GroupCard from '../../../Common/GroupCard';
 import { NavLink } from 'react-router-dom';
 import {setGroup} from "../../../../Reducer/Slices/groupSlice"
-import CreateGroupModal from './CreateGroupModal';
+import CreateGroupModal from './Modals/CreateGroupModal';
 function Group() {
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState([]);
@@ -52,7 +52,7 @@ function Group() {
               event.preventDefault(); 
               dispatch(setGroup(group));
             }}>
-            <NavLink to="/dashboard/aboutGroup">
+            <NavLink to={`/dashboard/aboutGroup/:${group._id}`}>
               <GroupCard group={group}></GroupCard>
             </NavLink>
           </div>

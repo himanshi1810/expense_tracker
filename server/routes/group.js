@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/createGroup", auth, createGroup);
 router.post("/addMemberConfirmation", auth, addMemberConfirmation);
 router.post("/updateGroup", auth, updateGroup);
-router.get("/viewGroup", viewGroup);
+router.post("/viewGroup", viewGroup);
 router.get("/viewUserGroup", auth, viewUserGroups);
 router.post("/addMembers", auth, addMembers);
 router.delete("/deleteGroup", auth, deleteGroup);

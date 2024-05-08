@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
 import { MdClose } from "react-icons/md";
-import Upload from '../../../Common/Upload';
+import Upload from '../../../../Common/Upload';
 import { useSelector } from 'react-redux';
-import { createGroup } from '../../../../Services/operations/group';
+import { createGroup } from '../../../../../Services/operations/group';
 import { toast } from 'react-toastify';
 function CreateGroupModal({setOpenModal}) {
     const {token} = useSelector((state) => state.auth);

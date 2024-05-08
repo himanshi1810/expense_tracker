@@ -12,7 +12,8 @@ const {
     VIEW_USER_EXPENSE_API,
     VIEW_RECENT_USER_EXPENSE_API,
     VIEW_USER_MONTHLY_EXPENSE_API,
-    VIEW_USER_DAILY_EXPENSE_API
+    VIEW_USER_DAILY_EXPENSE_API,
+    VIEW_GROUP_RECENT_EXPENSES_API
 } = expenseEndPoints;
 
 //Add Expense
@@ -246,6 +247,26 @@ export const viewUserDailyExpense = async (data, token) => {
         result = response?.data;
     } catch (error) {
         console.log("Error occurred while fetching user daily expenses:", error);
+        toast.error(error.message);
+    }
+    toast.dismiss(toastId);
+    return result;
+};
+
+export const viewGroupRecentExpense = async (data, token) => {
+    let result = null;
+    const toastId = toast.loading("Loading...");
+    try {
+        const response = await apiConnector("GET", VIEW_GROUP_RECENT_EXPENSES_API, data, {
+            Authorization: `Bearer ${token}`,
+        });
+        console.log("View Group Recent Expense API Response...", response);
+        if (!response?.data?.success) {
+            throw new Error("Could not fetch group recent expenses");
+        }
+        result = response?.data;
+    } catch (error) {
+        console.log("Error occurred while fetching group recent expenses:", error);
         toast.error(error.message);
     }
     toast.dismiss(toastId);

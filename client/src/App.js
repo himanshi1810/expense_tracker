@@ -47,7 +47,7 @@ function App() {
             user!==null && (
               <>
                 <Route path="/dashboard/aboutExpense/:id" element={<AboutExpene></AboutExpene>}></Route>
-                <Route path="/dashboard/aboutGroup" element={<AboutGroup></AboutGroup>}></Route>
+                <Route path="/dashboard/aboutGroup/:id" element={<AboutGroup></AboutGroup>}></Route>
                 <Route path="/dashboard/aboutGroup/updateGroup/:id" element={<UpdateGroup></UpdateGroup>}></Route>
                 <Route path="/dashboard/aboutGroup/balanceSheet/:id" element={<BalanceSheet></BalanceSheet>}></Route>
               </>
