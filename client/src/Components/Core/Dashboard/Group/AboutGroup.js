@@ -90,7 +90,7 @@ function AboutGroup() {
             <IoIosPersonAdd></IoIosPersonAdd>
             Add Member
           </button>
-          <button onClick={()=>{setAddExpenseModal(true)}} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700  justify-center items-center px-4 py-1 rounded-md'>
+          <button onClick={()=>(setAddExpenseModal(true))} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700  justify-center items-center px-4 py-1 rounded-md'>
             <MdAdd></MdAdd>
             Add Expense
           </button>
@@ -141,7 +141,7 @@ function AboutGroup() {
         addMemberModal && (<AddMemberModal id={id} groupName={group.groupName} groupMembers={group.groupMembers} setAddMemberModal={setAddMemberModal}></AddMemberModal>)
       }
       {
-        addExpenseModal && (<CreateExpenseModal></CreateExpenseModal>)
+        addExpenseModal && (<CreateExpenseModal setAddExpenseModal={setAddExpenseModal}></CreateExpenseModal>)
       }
     </div>
   )
