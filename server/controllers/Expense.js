@@ -8,9 +8,13 @@ const { addSplit, clearSplit } = require("./Group");
 
 exports.addExpense = async (req, res) => {
     try {
-        const {expenseName, expenseDescription, groupId, expenseAmount, expenseType} = req.body;
+        const {expenseName, expenseDescription,  expenseAmount, expenseType} = req.body;
+        const groupId = req.params.id;
         const expenseFrom  = req.user.id;
-        let {expenseTo} = req.body
+        let expenseTo = req.body.expenseTo;
+       
+
+        
 
         console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription)
         if(!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription){
@@ -56,25 +60,24 @@ exports.addExpense = async (req, res) => {
        
 
         for(let member of expenseTo){
-            if(member!=expenseFrom){
-                console.log("Member email : ", member)
-                const memberSplit = await User.findOne({email : member});
-                console.log("Member : ", memberSplit)
-                if(member==null){
+            // Parse the email from the array if it's in the format of ["email"]
+            const email = Array.isArray(member) ? member[0] : member;
+            if(email != expenseFrom){
+                console.log("Member email : ", email);
+                const memberSplit = await User.findOne({ email: email });
+                console.log("Member : ", memberSplit);
+                if(memberSplit == null){
                     return res.status(400).json({
-                        success : false,
-                        message : "No User exist"
-                    })
+                        success: false,
+                        message: "User does not exist"
+                    });
                 }
-                if(!group.groupMembers.includes(memberSplit._id)){
-                    return res.status(400).json({
-                        success : false,
-                        message : "No User exist in group"
-                    })
-                }
+        
+                // Only proceed if memberSplit is not null
                 memebrsTo.push(memberSplit._id);
             }
         }
+        
         const expensePerMember = Number(expenseAmount) / memebrsTo.length;
 
         const expenseObj = {
