@@ -3,7 +3,8 @@ const BASE_URL = process.env.REACT_APP_BASE_URL
 export const groupEndPoints = {
     CREATE_GROUP_API : BASE_URL + "/group/createGroup",
     ADD_MEMBER_CONFIRMATION_API : BASE_URL + "/group/addMemberConfirmation",
-    UPDATE_GROUP_API : BASE_URL + "/group/updateGroup",
+    UPDATE_GROUP_API : BASE_URL + "/group/updateGroup/${group._id}",
+    UPDATE_GROUP_IMAGE_API : BASE_URL + "/group/updateGroupImage/${group._id}",
     VIEW_GROUP_API : BASE_URL + "/group/viewGroup",
     ADD_MEMBERS : BASE_URL + "/group/addMembers",
     DELETE_GROUP_API : BASE_URL + "/group/deleteGroup",

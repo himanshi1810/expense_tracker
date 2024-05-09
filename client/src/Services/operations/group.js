@@ -1,7 +1,7 @@
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast"
 import {groupEndPoints} from "../api";
 import { apiConnector } from "../apiConnector";
-const {CREATE_GROUP_API, ADD_MEMBER_CONFIRMATION_API, VIEW_USER_GROUP_API, UPDATE_GROUP_API, MAKE_SETTLEMENT_API, ADD_MEMBERS, VIEW_GROUP_API, DELETE_GROUP_API, BALANCE_SHEET_API} = groupEndPoints;
+const {CREATE_GROUP_API, ADD_MEMBER_CONFIRMATION_API, VIEW_USER_GROUP_API, UPDATE_GROUP_API, MAKE_SETTLEMENT_API, ADD_MEMBERS, VIEW_GROUP_API, DELETE_GROUP_API, BALANCE_SHEET_API, UPDATE_GROUP_IMAGE_API} = groupEndPoints;
 export const createGroup = async (data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...")
@@ -93,29 +93,36 @@ export const createGroup = async (data, token) => {
     toast.dismiss(toastId);
     return result
   }
-  export const deleteGroup = async(data, token) => {
-    let result = null;
-    const toastId = toast.loading("Loading...");
-    try {
+  export function deleteGroup(groupId, userId, token, navigate) {
+    return async (dispatch) => {
+      const toastId = toast.loading("Loading...");
+      try {
+        const data = {
+          groupId: groupId,
+          userId: userId
+        };
+  
         const response = await apiConnector("DELETE", DELETE_GROUP_API, data, {
-            Authorization: `Bearer ${token}`,
-        })
-        console.log("Delete Group api response...............", response);
-        if(!response?.data?.success){
-            throw new Error("Could not delete group");
-            toast.dismiss(toastId);
-            toast.error(response?.data?.message)
+          Authorization: `Bearer ${token}`,
+        });
+  
+        console.log("Delete Group API response: ", response);
+  
+        if (!response?.data?.success) {
+          throw new Error("Could not delete group");
         }
+  
         toast.success("Group Deleted successfully");
-        result = response?.data
-    } catch (error) {
+        dispatch(navigate('/dashboard/group'));
+      } catch (error) {
+        console.log("DELETE GROUP API ERROR: ", error);
+        
+      } finally {
         toast.dismiss(toastId);
-        console.log("DELETE GROUP API ERROR...", error);
-        toast.error(error.message);
-    }
-    toast.dismiss(toastId);
-    return result
+      }
+    };
   }
+  
   export const balanceSheet = async(data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
@@ -139,31 +146,33 @@ export const createGroup = async (data, token) => {
     toast.dismiss(toastId);
     return result
   }
-
-  export const updateGroup = async(data, token) => {
-    let result = null;
-    const toastId = toast.loading("Loading...");
-    try {
-        const response = await apiConnector("POST", UPDATE_GROUP_API, data, {
-            "Content-Type" : "multipart/form-data",
-            Authorization : `Bearer ${token}`
+  export function updateGroup(token, groupData, groupId) {
+    return async (dispatch) => {
+      const toastId = toast.loading("Loading...");
+      try {
+        const { groupName, groupDescription } = groupData;
+  
+        const response = await apiConnector("PUT", UPDATE_GROUP_API.replace('${group._id}', groupId), {
+            groupName, 
+            groupDescription
+        }, {
+          Authorization: `Bearer ${token}`,
         });
-        console.log("Update Group Api Response...", response);
-        if(!response?.data?.success){
-            throw new Error("Counl'd not update group");
-            toast.dismiss(toastId);
-            toast.error(response?.data?.message)
+        toast.success("Group Updated Successfully");
+        console.log("UPDATE_GROUP_API API RESPONSE............", response);
+  
+        if (!response.data.success) {
+          throw new Error(response.data.message);
         }
-        toast.success("Group updated successfully");
-        result = response?.data;
-    } catch (error) {
-        toast.dismiss(toastId);
-        console.log("ERROR WHILE UPDATING GROUP...", error);
-        toast.error(error.message);
-    }
-    toast.dismiss(toastId);
-    return result;
+        
+      } catch (error) {
+        console.log("UPDATE_GROUP_API API ERROR............", error);
+        toast.error("Could Not Update GROUP");
+      }
+      toast.dismiss(toastId);
+    };
   }
+
   export const makeSettlement = async(data, token) => {
     let result = null;
     const toastId = toast.loading("Loading...");
@@ -209,5 +218,35 @@ export const createGroup = async (data, token) => {
     }
     toast.dismiss(toastId);
     return result
+  }
+
+  export function updateGroupImage(token, formData,groupId) {
+    return async (dispatch) => {
+      const toastId = toast.loading("Loading...")
+      try {
+        const response = await apiConnector(
+          "PUT",
+          UPDATE_GROUP_IMAGE_API.replace('${group._id}', groupId),
+          formData,
+          {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          }
+        )
+        console.log(
+          "UPDATE_GROUP_PICTURE_API API RESPONSE............",
+          response
+        )
+  
+        if (!response.data.success) {
+          throw new Error(response.data.message)
+        }
+        toast.success("Group Image Updated Successfully")
+      } catch (error) {
+        console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error)
+        toast.error("Could Not Update Display Picture")
+      }
+      toast.dismiss(toastId)
+    }
   }
   

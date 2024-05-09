@@ -57,20 +57,20 @@ export function updateProfile(token, profileData) {
         }, {
           Authorization: `Bearer ${token}`,
         });
-  
+        toast.success("Profile Updated Successfully");
         console.log("UPDATE_PROFILE_API API RESPONSE............", response);
   
         if (!response.data.success) {
           throw new Error(response.data.message);
         }
-        toast.success("Profile Updated Successfully");
+        
       } catch (error) {
         console.log("UPDATE_PROFILE_API API ERROR............", error);
         toast.error("Could Not Update Profile");
       }
       toast.dismiss(toastId);
     };
-  }
+}
    
 
 export async function changePassword(token, formData) {

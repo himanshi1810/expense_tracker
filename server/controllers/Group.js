@@ -23,7 +23,7 @@ exports.createGroup = async (req, res) => {
         const groupOwnerEmail = groupOwnerId.email;
         let allGroupMembers = groupMembers.split(',');
         if(!allGroupMembers.includes(groupOwnerId.email)){
-            allGroupMembers = Array.fron(new Set([...allGroupMembers, groupOwnerId.email]))
+            allGroupMembers = Array.from(new Set([...allGroupMembers, groupOwnerId.email]))
         }
         console.log("All group Members", allGroupMembers);
 
@@ -154,35 +154,42 @@ exports.addMemberConfirmation = async (req, res) => {
 }
 
 exports.updateGroup = async (req, res) => {
+    const { groupName,groupDescription} = req.body;
+    const groupId = req.params.id; 
+
     try {
-        const { groupId, updatedGroup } = req.body;
-        let group = await Group.findById(groupId);
+        // Check if gro exists
+        const group = await Group.findById(groupId);
+
         if (!group) {
-            return res.status(400).json({
-                success: false,
-                message: "Group does not exist"
-            });
+            return res.status(404).json({ success: false, message: "Group not found" });
         }
 
-        if (req.files && req.files.groupImage) {
-            group.groupImage = await imageUpload(req.files.groupImage, process.env.FOLDER_NAME, 1000, 1000);
-        }
+        // Update group data
+        group.groupName = groupName;
+        group.groupDescription = groupDescription;
+    
+    
+        // Save updated group
+        await group.save();
 
-        Object.assign(group, updatedGroup);
-        group = await group.save();
-
-        return res.status(200).json({
+        // Construct the response data with the updated group details
+        const responseData = {
             success: true,
-            message: "Group updated successfully",
-            updatedGroup: group
-        });
+            message: "User profile updated successfully",
+            updatedUserDetails: {
+                _id: group._id,
+                groupName: group.groupName,
+                groupDescription: group.groupDescription,
+            
+            
+            }
+        };
+
+        res.status(200).json(responseData);
     } catch (error) {
-        console.error("Error updating group:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error occurred while updating group",
-            error: error.message
-        });
+        console.error("Error updating group profile:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
 
@@ -287,7 +294,7 @@ exports.deleteGroup = async(req, res) => {
                 message : "Group not found"
             })
         }
-        if(group.groupOwner!=userId){
+        if(!group.groupOwner || group.groupOwner!=userId){
             return res.status(400).json({
                 success : false,
                 message : "Only owner can delete the group"
@@ -465,3 +472,38 @@ exports.viewUserGroups = async(req, res) => {
         });
     }
 }
+
+exports.updateGroupImage = async (req, res) => {
+    try {
+        const displayPicture = req.files.displayPicture; 
+        const groupId = req.params.id; 
+
+        // Upload image to cloudinary
+        const image = await uploadImageToCloudinary(
+            displayPicture,
+            process.env.FOLDER_NAME,
+            1000,
+            1000
+        );
+
+        // Update the group image field in the database
+        const updatedGroup = await Group.findByIdAndUpdate(
+            groupId,
+            { groupImage: image.secure_url },
+            { new: true }
+        );
+
+        // Respond with success message and updated data
+        res.json({
+            success: true,
+            message: `Group Image Updated successfully`,
+            data: updatedGroup, // Return the updated group data
+        });
+    } catch (error) {
+        console.error("Error updating group image:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
