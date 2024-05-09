@@ -8,8 +8,10 @@ const { addSplit, clearSplit } = require("./Group");
 
 exports.addExpense = async (req, res) => {
     try {
-        const {expenseName, expenseDescription, groupId, expenseTo, expenseAmount, expenseType} = req.body;
-        const expenseFrom = req.user.id;
+        const {expenseName, expenseDescription, groupId, expenseAmount, expenseType} = req.body;
+        const expenseFrom  = req.user.id;
+        let {expenseTo} = req.body
+
         console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription)
         if(!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription){
             return res.status(400).json({
@@ -17,6 +19,9 @@ exports.addExpense = async (req, res) => {
                 message : "All the details is necessary"
             }) 
         }
+        console.log("Expense to 1 : ", typeof(expenseTo));
+        expenseTo = expenseTo.split(',');
+         console.log("Expense to 2 : ", expenseTo);
         if(expenseTo.length==1 && expenseFrom===expenseTo[0]){
             return res.status(400).json({
                 success : true,
@@ -30,30 +35,32 @@ exports.addExpense = async (req, res) => {
                 message : "No group exist"
             })
         }
-        const owner = await User.findOne({email : expenseFrom});
+        const owner = await User.findById(expenseFrom);
         if(!owner){
             return res.status(400).json({
                 success : false,
-                message : "No User exist"
+                message : "Owner not exist"
             })
         }
         //console.log("Owner : ", owner);
         let memebrsTo = [];
-        if(!group.groupMembers.includes(owner._id)){
+        if(!group.groupMembers.includes(expenseFrom)){
             return res.status(400).json({
                 success : false,
                 message : "No User exist in group"
             })
         }
-        if(expenseTo.includes(expenseFrom)){
+        if(expenseTo.includes(owner.email)){
             memebrsTo.push(owner._id)
         }
        
 
-        for(member of expenseTo){
+        for(let member of expenseTo){
             if(member!=expenseFrom){
+                console.log("Member email : ", member)
                 const memberSplit = await User.findOne({email : member});
-                if(!member){
+                console.log("Member : ", memberSplit)
+                if(member==null){
                     return res.status(400).json({
                         success : false,
                         message : "No User exist"
