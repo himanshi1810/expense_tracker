@@ -5,6 +5,7 @@ import Upload from '../../../../Common/Upload';
 import { useSelector } from 'react-redux';
 import { createGroup } from '../../../../../Services/operations/group';
 import { toast } from 'react-toastify';
+import AddMemberDynamicField from '../../../../Common/AddMemberDynamicField';
 function CreateGroupModal({setOpenModal}) {
     const {token} = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(true);
@@ -18,10 +19,7 @@ function CreateGroupModal({setOpenModal}) {
         getValues,
         formState : {errors}
     } = useForm();
-    const {fields, append, remove} = useFieldArray({
-        name : "groupMembers",
-        control
-    })
+    
     const submitHandler = async (data) => {
         const toastId = toast.loading('Loading...', { autoClose: false }); 
         //toast.loading("Loading....");
@@ -31,9 +29,7 @@ function CreateGroupModal({setOpenModal}) {
         formData.append("groupImage", data.groupImage);
         formData.append("groupMembers", data.groupMembers);
         formData.append("groupCurrency", "INR")
-        formData.append("groupType", "Group");
-        
-    
+        formData.append("groupType", "Group");    
         setLoading(true);
         console.log("BEFORE add course API call");
         console.log("PRINTING FORMDATA", formData);
@@ -94,33 +90,13 @@ function CreateGroupModal({setOpenModal}) {
                             viewData={null}
                             editData={null}
                             groupImage=""></Upload>
-                    <div className='flex flex-col gap-2'>
-                        <label htmlFor='groupMembers'>Add Members (Add emailId)</label>
-                        {
-                            fields.map((member, index) => (
-                                <div key={member.id} className='flex gap-2 items-center'>
-                                    <input type='email' placeholder="Add member's emailid" {...register(`groupMembers[${index}]`)}
-                                     className='bg-black-400 w-[100%] border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md'/>
-                                    {
-                                        index>=0 && (
-                                            <button onClick={(e)=>{
-                                                e.preventDefault();
-                                                remove(index)
-                                            }}
-                                            onKeyDown={(e) => {
-                                                if(e.key=='Enter'){
-                                                    e.preventDefault();
-                                                }
-                                            }}><MdClose></MdClose></button>
-                                        )
-                                    }
-                                
-                                </div>
-                                
-                            ))
-                        }
-                        <button type='button' onClick={()=>append()} className='bg-gray-600 px-3 py-2 rounded-md text-white-100 w-max self-end'>Add</button>
-                    </div>
+                   <AddMemberDynamicField
+                             name="groupMembers"
+                             label="Add members(Enter email id)"
+                             register={register}
+                             control={control}
+                             setValue={setValue}
+                             errors={errors}></AddMemberDynamicField>
                     <button type='submit' className='bg-blue-400 text-white-100 px-3 py-2 rounded-md self-center hover:bg-black-400 hover:border hover:shadow-md hover:border-gray-400 hover:scale-90 transition-all duration-500'>Create</button>
 
                 </form>

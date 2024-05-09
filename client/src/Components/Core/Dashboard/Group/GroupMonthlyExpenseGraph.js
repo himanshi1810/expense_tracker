@@ -84,11 +84,16 @@ function GroupMonthlyExpenseGraph({groupId}) {
     };
 
     return (
-        <div>
+        <div className='h-[20.3rem] border border-gray-500 rounded-md px-7 py-3'>
+            <p className='text-[16px] text-white-100'>User Monthly Expense Statistics</p>
             {!loading && expenseData.length > 0 && (
-                <Line options={options} className='h-[20.3rem] border border-gray-500 rounded-md px-7 py-3' data={data} />
+                <Line options={options} className='' data={data} />
             )}
-            {loading && <div>Loading...</div>}
+            {!loading && expenseData.length==0 && (
+                <div className='h-full text-[16px] text-gray-400 flex justify-center items-center'>
+                        You haven't created expense yet
+                </div>
+            )}
         </div>
     );
 }
