@@ -224,7 +224,8 @@ exports.viewGroup = async (req, res) => {
 
 exports.addMembers = async(req, res) => {
     try{
-        const {groupMembers, groupId, userId} = req.body;
+        const {groupMembers, groupId} = req.body;
+        const userId = req.user.id
         if(!groupMembers || !groupId){
             return res.status(400).json({
                 success : false,
@@ -240,17 +241,17 @@ exports.addMembers = async(req, res) => {
         }
         
        const userRequested = await User.findById(userId);
-       if(!userRequested){
-        return res.status(400).json({
-            success : false,
-            message : "User can not add any memebr"
-        })
-       }
-        const memberList = [];
-        const notAddedMembaers = [];
+    //    if(!userRequested){
+    //     return res.status(400).json({
+    //         success : false,
+    //         message : "User can not add any memebr"
+    //     })
+    //    }
+        let memberList = [];
+        let notAddedMembaers = [];
 
         for(let memberEmail of groupMembers){
-            const user = await User.findOne({email : memberEmail});
+            let user = await User.findOne({email : memberEmail});
             if (!user) {
                 const confirmationTemplate = confirmationEmail(userRequested.firstName + " " + userRequested.lastName, group.groupName, "http://gmail.com");
                 const mail = await mailSender(memberEmail, "Confirmation Email", confirmationTemplate);
@@ -267,7 +268,8 @@ exports.addMembers = async(req, res) => {
             
         }
         group.markModified("split");
-        group = (await group.save()).populate("groupMembers");
+        group = (await group.save());
+
         return res.status(200).json({
             success : true,
             message : "Members are added in group",

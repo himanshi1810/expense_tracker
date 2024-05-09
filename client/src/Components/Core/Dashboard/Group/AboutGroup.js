@@ -25,7 +25,6 @@ function AboutGroup() {
   const [addMemberModal, setAddMemberModal] = useState(false);
   const nevigate = useNavigate();
   const [group, setGroup] = useState(null);
-  let createdAt = "Nan"
   const getGroupRecentExpense = async() => {
     const toastId = toast.loading("Loading....");
     try {
@@ -61,7 +60,7 @@ function AboutGroup() {
       toast.dismiss(toastId);
     }
     getGroupData();
-  }, [])
+  }, [addMemberModal])
   useEffect(()=>{
     setLoading(true);
     getGroupRecentExpense();
@@ -126,11 +125,20 @@ function AboutGroup() {
         </div>
         <div className='flex flex-col gap-6'>
           <p className='text-[18px] text-white-100 font-semibold'>Recent Expense</p>
-          <GroupRecentExpenses recentExpenses={recentExpenses}> </GroupRecentExpenses>
+          {
+            !loading && recentExpenses.length==0 && (
+              <div className='text-[16px] text-gray-400'>You haven't created any expense yet</div>
+            )
+          }
+          {
+            !loading && recentExpenses.length>0 && (
+              <GroupRecentExpenses recentExpenses={recentExpenses}> </GroupRecentExpenses>
+            )
+          }
         </div>
       </div>
       {
-        addMemberModal && (<AddMemberModal></AddMemberModal>)
+        addMemberModal && (<AddMemberModal id={id} groupName={group.groupName} groupMembers={group.groupMembers} setAddMemberModal={setAddMemberModal}></AddMemberModal>)
       }
       {
         addExpenseModal && (<CreateExpenseModal></CreateExpenseModal>)
