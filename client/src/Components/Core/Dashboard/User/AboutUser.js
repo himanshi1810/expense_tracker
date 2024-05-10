@@ -1,9 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DailyUserExpenseGraph from './DailyUserExpenseGraph'
 import MonthlyExpenseGraph from './MonthlyExpenseGraph'
 import RecentExpenses from './RecentExpenses'
+import { useDispatch, useSelector } from 'react-redux';
+
+import Modal from '../../../Common/Modal';
+import { addMemberConfirmation } from '../../../../Services/operations/group';
+import { setIsGrpReq } from '../../../../Reducer/Slices/authSlice';
 
 function AboutUser() {
+  const [openReqModal, setOpenReqModal] = useState(null);
+  const {isGrpReq, token} = useSelector((state) => state.auth);
+  //const {user} = useSelector((state) => state.profile);
+  const {groupId} = useSelector((state) => state.group);
+  console.log("group Request", isGrpReq);
+  console.log("Id", groupId);
+  const dispatch = useDispatch();
+  const joinGroupWithConfirmation = async() => {
+    try {
+      const data = {
+        groupId : groupId
+      };
+      const req = await addMemberConfirmation(data, token);
+      console.log("Request printing for add member with confirmation : ", req);
+      setOpenReqModal(null);
+      dispatch(setIsGrpReq(false));
+    } catch (error) {
+      console.log("error occured while adding member with confirmation", error.message);
+    }
+  }
+  useEffect(()=> {
+    if(isGrpReq==true){
+      setOpenReqModal(
+        {
+            title : "Do you want to join Group",
+            description : "Are you sure you want to Join group?",
+            button1Text : "Join",
+            button1Handler : () => joinGroupWithConfirmation(),
+            button2Text : "Cancel",
+            button2Handler : () => setOpenReqModal(null)
+        }
+      );
+    }
+  }, [])
   
   return (
     <div className='flex flex-col gap-6 text-gray-400'>
@@ -30,6 +69,9 @@ function AboutUser() {
       <div>
 
       </div>
+      {
+        openReqModal && (<Modal modalData={openReqModal}></Modal>)
+      }
     </div>
   )
 }

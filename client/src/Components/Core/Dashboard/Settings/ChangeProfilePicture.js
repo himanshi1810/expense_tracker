@@ -9,6 +9,7 @@ export default function ChangeProfilePicture() {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
+  console.log("Printing user : ", user)
 
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -58,17 +59,17 @@ export default function ChangeProfilePicture() {
   return (
     <>
 <div className="flex items-center justify-center rounded-md p-8 px-12 text-white-100 relative">
-  <div className="flex items-center gap-x-4 flex-col">
-    <div className="relative aspect-square w-[78px] rounded-full overflow-hidden">
+  <div className="relative flex items-center gap-x-4 flex-col">
+    <div className="aspect-square w-max rounded-full z-20 overflow-hidden">
      
           <img
-          src={previewSource || user?.image}
+          src={previewSource || user?.profileImage}
           alt={`profile-${user?.firstName}`}
-          className="w-full h-full object-cover rounded-full border border-gray-200 z-0"
+          className="w-[6rem] aspect-square object-cover rounded-full border border-gray-200 z-0"
         />
         <div className=" flex items-center justify-center ">
           <label htmlFor="fileInput">
-            <div className="absolute bottom-2 right-2 rounded-full bg-blue-500 p-1 shadow-md z-20 cursor-pointer">  <FiEdit2 className="text-white text-lg" />
+            <div className="absolute bottom-16 right-3 rounded-full bg-blue-400 p-1 shadow-md cursor-pointer">  <FiEdit2 className="text-white text-lg" />
             </div>
           </label>
         </div>

@@ -12,7 +12,7 @@ function DailyUserExpenseGraph() {
     const [expenseData, setExpenseData] = useState([]);
     const { user } = useSelector((state) => state.profile);
     const { token } = useSelector((state) => state.auth);
-
+    let dataPoints = [];
     useEffect(() => {
         const getExpenseData = async () => {
             try {
@@ -20,6 +20,10 @@ function DailyUserExpenseGraph() {
                 const res = await viewUserMonthlyExpense(token);
                 setExpenseData(res.data.expenseData);
                 setLoading(false);
+                dataPoints = expenseData.map((item) => ({
+                    x: new Date(item._id.year, item._id.month - 1),
+                    y: item.totalExpense,
+                }));
             } catch (error) {
                 console.log("Error occurred in fetching user daily expense data: ", error);
                 setLoading(false);
@@ -29,10 +33,7 @@ function DailyUserExpenseGraph() {
         getExpenseData();
     }, []);
 
-    const dataPoints = expenseData.map((item) => ({
-        x: new Date(item._id.year, item._id.month - 1),
-        y: item.totalExpense,
-    }));
+    
 
     const options = {
         responsive: true,
@@ -80,10 +81,16 @@ function DailyUserExpenseGraph() {
 
     return (
         <div>
-            {!loading && expenseData.length > 0 && (
-                <Line options={options} height={180} className='pb-2' data={data} />
-            )}
-            {loading && <div>Loading...</div>}
+           {
+       !loading && expenseData.length>0 && (
+          <Line options={options} className='pb-2' height={180} data={data} />
+       )
+     }
+      {
+        !loading && expenseData.length==0 && (
+          <p>You have not created any expense yet</p>
+        )
+      }
         </div>
     );
 }

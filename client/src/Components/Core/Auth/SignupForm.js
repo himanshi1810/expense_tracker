@@ -2,16 +2,25 @@ import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { sendOtp } from "../../../Services/operations/authAPI"
-import { setSignupData } from "../../../Reducer/Slices/authSlice"
+import { setIsGrpReq, setSignupData } from "../../../Reducer/Slices/authSlice"
+import { setGroupId } from "../../../Reducer/Slices/groupSlice"
 
 
 function SignupForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-
+  const isGrpReq = useParams('isGrpReq');
+  console.log("isGrpReq123",isGrpReq.isGrpReq);
+  if(isGrpReq.isGrpReq!=null){
+    dispatch(setIsGrpReq(true));
+  }
+  const groupId = useParams('groupId');
+  console.log("isGrpReq",groupId);
+  if(isGrpReq.groupId!=null){
+    dispatch(setGroupId(isGrpReq.groupId));
+  }
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",

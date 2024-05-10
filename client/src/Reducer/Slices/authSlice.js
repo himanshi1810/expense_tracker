@@ -5,6 +5,7 @@ const initialState = {
   signupData: null,
   loading: false,
   token: localStorage.getItem("expenseToken") ? JSON.parse(localStorage.getItem("expenseToken")) : null,
+  isGrpReq : false,
 };
 
 
@@ -21,8 +22,12 @@ const authSlice = createSlice({
       setToken(state, value) {
         state.token = value.payload;
       },
+      setIsGrpReq(state, value){
+        state.isGrpReq = value.payload;
+        console.log("Is Group Request in slice : ", state.isGrpReq);
+      }
     },
 });
 
-export const {setSignupData, setLoading, setToken} = authSlice.actions;
+export const {setSignupData, setLoading, setToken, setIsGrpReq} = authSlice.actions;
 export default authSlice.reducer;

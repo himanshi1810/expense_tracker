@@ -29,13 +29,25 @@ function RecentExpenses() {
     }
   return (
     <div>
-        <div className='flex flex-col gap-4 mt-4'>
-            {
-                expense.map((expense, index) => (
-                    <ExpenseCard key={index} expense={expense}></ExpenseCard>
-                ))
-            }
-        </div>
+        {
+            !loading && expense.length>0 && (
+                <div className='flex flex-col gap-4 mt-4'>
+                {
+                    expense.map((expense, index) => (
+                        <ExpenseCard key={index} expense={expense}></ExpenseCard>
+                    ))
+                }
+            </div>
+            )
+        }
+        
+        {
+            !loading && expense.length==0 && (
+                <div>
+                    <p>You have not created any expense yet</p>
+                </div>
+            )
+        }
     </div>
   )
 }
