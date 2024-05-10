@@ -151,7 +151,7 @@ exports.login = async (req, res) => {
 				message: `User Login Success`,
 			});
 		} else {
-			return res.status(401).json({
+			return res.status(400).json({
 				success: false,
 				message: `Password is incorrect`,
 			});
@@ -284,3 +284,32 @@ exports.changePassword = async (req, res) => {
 		});
 	}
 };
+
+exports.viewUser = async (req,res) => {
+	try {
+        const { userId } = req.body;
+        console.log("User Data: ", req.body);
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User"
+            });
+        }
+
+       
+        return res.status(200).json({
+            success: true,
+            message: "User data fetched successfully",
+            User : user,
+           
+        });
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred while fetching user data",
+            error: error.message
+        });
+    }
+}

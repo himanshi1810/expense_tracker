@@ -10,6 +10,7 @@ const {
     LOGIN_API,
     RESETPASSTOKEN_API,
     RESETPASSWORD_API,
+    VIEW_USER_API
   } = endpoints
 
   export function sendOtp(email, navigate) {
@@ -33,7 +34,12 @@ const {
         navigate("/emailVerification")
       } catch (error) {
         console.log("SENDOTP API ERROR............", error)
-          toast.error("You are Already Registered or Somethingelse Please Try later")
+        if(error.message === "Request failed with status code 401"){
+          toast.error("Use Is already Registered Please login")
+        }
+        else{
+          toast.error("SignUp failed Please Try later")
+        }
       
       }
       dispatch(setLoading(false))
@@ -107,7 +113,13 @@ const {
         navigate("/dashboard/aboutUser")
       } catch (error) {
         console.log("LOGIN API ERROR............", error)
-        toast.error("Login Failed")
+        if(error.message === "Request failed with status code 401"){
+          toast.error("Please Sign Up first")
+        } else if(error.message === "Request failed with status code 400"){
+          toast.error("Verify your email or password")
+        } else {
+          toast.error("Login Failure Please Try Again")
+        }
       }
       dispatch(setLoading(false))
       toast.dismiss(toastId)
@@ -166,4 +178,25 @@ const {
       }
       dispatch(setLoading(false));
     }
+  }
+  export const viewUser = async(data) => {
+    let result = null;
+    
+    const toastId = toast.loading("Loading...");
+    try {
+        const response = await apiConnector("POST", VIEW_USER_API, data)
+        console.log("View User api response...............", response);
+        if(!response?.data?.success){
+            toast.dismiss(toastId);
+            toast.error(response?.data?.message)
+            throw new Error("Could not fetch user data"); 
+        }
+        result = response?.data
+    } catch (error) {
+        toast.dismiss(toastId);
+        console.log("VIEW USER API ERROR...", error);
+        toast.error(error.message);
+    }
+    toast.dismiss(toastId);
+    return result
   }
