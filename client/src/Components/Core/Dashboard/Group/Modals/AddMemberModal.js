@@ -26,7 +26,7 @@ function AddMemberModal({groupMembers, setAddMemberModal, groupName, id}) {
     try {
       const data = {
         groupMembers : member,
-        link : "http://localhost:3000/signup",
+        link : `http://localhost:3000/signup/true/${id}`,
         groupId : id
       }
       const res = await addMembers(data, token);

@@ -30,7 +30,7 @@ function App() {
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/contactUs" element={<ContactUs></ContactUs>}></Route>
-        <Route path="/signup" element={<SignUp setIsLoggedIn={setIsLoggedIn}></SignUp>}></Route>
+        <Route path="/signup/:isGrpReq?/:groupId?" element={<SignUp setIsLoggedIn={setIsLoggedIn}></SignUp>}></Route>
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}></Login>}></Route>
         <Route path="/forgotPassword" element={<ForgotPassword></ForgotPassword>}></Route>
         <Route path="/changePassword/:id" element={<ChangePassword></ChangePassword>}></Route>

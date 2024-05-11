@@ -37,7 +37,7 @@ export default function UpdatePassword() {
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
 
-              <label htmlFor="oldPassword" className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
+              <label htmlFor="oldPassword" className="mb-1 text-[0.88rem] leading-[1rem] text-white-100">
                 Old Password
               </label>
               <input
@@ -45,27 +45,27 @@ export default function UpdatePassword() {
                 name="oldPassword"
                 id="oldPassword"
                 placeholder="Enter Current Password"
-                className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                className="form-style w-full  border border-gray-400 text-[14px] bg-black-400 text-white-100 py-2 rounded-lg px-2"
                 {...register("oldPassword", { required: true })}
               />
               <span
                 onClick={() => setShowOldPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-3 bottom-3 z-[10] cursor-pointer"
               >
                 {showOldPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#0b0d10" />
+                  <AiOutlineEyeInvisible fontSize={20} className="text-white-100" />
                 ) : (
-                  <AiOutlineEye fontSize={24} fill="#0b0d10" />
+                  <AiOutlineEye fontSize={20} className="text-white-100" />
                 )}
               </span>
               {errors.oldPassword && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-pink-200">
                   Please enter your Current Password.
                 </span>
               )}
             </div>
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="newPassword" className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
+              <label htmlFor="newPassword" className="mb-1 text-[0.89rem] leading-[1] text-white-100">
                New Password
               </label>
               <input
@@ -73,17 +73,17 @@ export default function UpdatePassword() {
                 name="newPassword"
                 id="newPassword"
                 placeholder="Enter New Password"
-                className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                className="form-style w-full border border-gray-400 text-[14px] bg-black-400 text-white-100 py-2 rounded-lg px-2"
                 {...register("newPassword", { required: true })}
               />
               <span
                 onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-3 bottom-3 z-[10] cursor-pointer"
               >
                 {showNewPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#0b0d10" />
+                  <AiOutlineEyeInvisible fontSize={20} className="text-white-100" />
                 ) : (
-                  <AiOutlineEye fontSize={24} fill="#0b0d10" />
+                  <AiOutlineEye fontSize={20} className="text-white-100" />
                 )}
               </span>
               {errors.newPassword && (
@@ -94,7 +94,7 @@ export default function UpdatePassword() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end text-[15px] gap-2">
           <button
             onClick={() => {
               navigate("/dashboard/aboutUser")

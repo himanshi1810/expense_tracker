@@ -35,46 +35,46 @@ export default function EditProfile() {
           <h2 className="text-lg font-semibold text-white-100">
             Profile Information
           </h2>
-          <div className="flex flex-col gap-5 lg:flex-row">
+          <div className="flex text-[14px] flex-col gap-5 lg:flex-row">
             <div className="flex flex-col gap-2 lg:w-[48%]">
             <label>
-            <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
-              First Name <sup className="text-white-100">*</sup>
+            <p className="mb-1 text-[o,8rem] leading-[1.375rem] text-white-100">
+              First Name <sup className="text-pink-200">*</sup>
             </p>
             <input
                 type="text"
                 name="firstName"
                 id="firstName"
                 placeholder="Enter first name"
-                className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                className="form-style w-full border border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
                 {...register("firstName", { required: true })}
                 defaultValue={user?.firstName}
               />
           </label>
             
               {errors.firstName && (
-                <span className="-mt-1 text-[12px] text-white-100">
+                <span className="-mt-1 text-[12px] text-pink-200">
                   Please enter your first name.
                 </span>
               )}
             </div>
             <div className="flex flex-col gap-2 lg:w-[48%]">
             <label>
-            <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
-              Last Name <sup className="text-white-100">*</sup>
+            <p className="mb-1 text-[0.8rem] leading-[1.375rem] text-white-100">
+              Last Name <sup className="text-pink-200">*</sup>
             </p>
             <input
                 type="text"
                 name="lastName"
                 id="lastName"
                 placeholder="Enter Last name"
-                className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                className="form-style w-full border border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
                 {...register("lastName", { required: true })}
                 defaultValue={user?.lastName}
               />
           </label>
               {errors.lastName && (
-                <span className="-mt-1 text-[12px] text-white-100">
+                <span className="-mt-1 text-[12px] text-pink-200">
                   Please enter your last name.
                 </span>
               )}
@@ -82,33 +82,33 @@ export default function EditProfile() {
           </div>
           <div className="">
             <label>
-            <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
-              Email <sup className="text-white-100">*</sup>
+            <p className="mb-1 text-[0.8rem] leading-[1.375rem] text-white-100">
+              Email <sup className="text-pink-200">*</sup>
             </p>
             <input
                 type="email"
                 name="email"
                 id="email"
                 placeholder="Enter your email"
-                className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                className="form-style w-full border border-gray-400 bg-black-400 text-white-100 py-2 text-[14px] rounded-lg px-2"
                 {...register("email", { required: true })}
                 defaultValue={user?.email}
               />
           </label>
               {errors.email && (
-                <span className="-mt-1 text-[12px] text-white-100">
+                <span className="-mt-1 text-[12px] text-pink-200">
                   Please enter your email.
                 </span>
               )}
             </div>
         </div>
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-2 -mt-2">
           <button
             onClick={() => {
               navigate("/dashboard/aboutUser")
             }}
-            className="cursor-pointer rounded-md bg-blue-400 py-2 px-5 font-semibold text-white-100"
+            className="cursor-pointer rounded-md bg-blue-400 py-2 px-5 text-[15px] font-semibold text-white-100"
           >
             Cancel
           </button>
