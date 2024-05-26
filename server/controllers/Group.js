@@ -106,7 +106,8 @@ exports.createGroup = async (req, res) => {
 
 exports.addMemberConfirmation = async (req, res) => {
     try{
-        const { userId, groupId } = req.body;
+        const { groupId } = req.body;
+        const userId = req.user.id;
 
         // Check if both the group and user exist
         let [group, user] = await Promise.all([
@@ -224,7 +225,7 @@ exports.viewGroup = async (req, res) => {
 
 exports.addMembers = async(req, res) => {
     try{
-        const {groupMembers, groupId} = req.body;
+        const {groupMembers, groupId, link} = req.body;
         const userId = req.user.id
         if(!groupMembers || !groupId){
             return res.status(400).json({
@@ -253,7 +254,7 @@ exports.addMembers = async(req, res) => {
         for(let memberEmail of groupMembers){
             let user = await User.findOne({email : memberEmail});
             if (!user) {
-                const confirmationTemplate = confirmationEmail(userRequested.firstName + " " + userRequested.lastName, group.groupName, "http://gmail.com");
+                const confirmationTemplate = confirmationEmail(userRequested.firstName + " " + userRequested.lastName, group.groupName, link);
                 const mail = await mailSender(memberEmail, "Confirmation Email", confirmationTemplate);
                 notAddedMembaers.push(memberEmail);
             } else {

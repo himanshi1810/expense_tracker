@@ -1,15 +1,21 @@
 export const NavbarLinks = [
     {
+        id : 1,
         title : "Home",
-        link: "/"
+        path: "/",
+        Icon : "MdOutlineHome"
     },
     {
+        id : 2,
         title : "About Us",
-        link: "/about"
+        path: "/about",
+        Icon : "MdInfoOutline"
     },
     {
+        id : 3,
         title : "Contact Us",
-        link: "/contactUs"
+        path: "/contactUs",
+        Icon : "MdOutlineContactMail"
     },
     
 ]
