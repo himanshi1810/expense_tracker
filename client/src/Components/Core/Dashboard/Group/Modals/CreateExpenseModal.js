@@ -4,11 +4,14 @@ import { MdClose } from "react-icons/md";
 import { useSelector } from 'react-redux';
 import { addExpense } from '../../../../../Services/operations/expense';
 import {toast} from 'react-toastify';
+import { useParams } from 'react-router-dom';
 
 function CreateExpenseModal({setAddExpenseModal}) {
   const { token } = useSelector((state) => state.auth);
   const { group } = useSelector((state) => state.group);
   const [loading, setLoading] = useState(true);
+  let {id} = useParams();
+  id = id.substring(1);
 
     const {
         register,
@@ -36,7 +39,7 @@ function CreateExpenseModal({setAddExpenseModal}) {
         setLoading(true);
         console.log("BEFORE add Expense API call");
         console.log("PRINTING FORMDATA", formData);
-        const result = await addExpense(formData, token, group._id);
+        const result = await addExpense(formData, token, id);
         console.log("Printing  result :", result);
         if (!result) {
             toast.error("Error occurred while adding Expense");
