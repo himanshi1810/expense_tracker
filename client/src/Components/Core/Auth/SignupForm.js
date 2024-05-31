@@ -87,7 +87,7 @@ function SignupForm() {
               value={firstName}
               onChange={handleOnChange}
               placeholder="Enter first name"
-              className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+              className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
             />
           </label>
           <label>
@@ -101,7 +101,7 @@ function SignupForm() {
               value={lastName}
               onChange={handleOnChange}
               placeholder="Enter last name"
-              className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+              className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
             />
           </label>
         </div>
@@ -116,7 +116,7 @@ function SignupForm() {
             value={email}
             onChange={handleOnChange}
             placeholder="Enter email address"
-            className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+            className="form-style w-[90%] border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
           />
         </label>
         <div className="flex gap-x-4">
@@ -131,16 +131,16 @@ function SignupForm() {
               value={password}
               onChange={handleOnChange}
               placeholder="Enter Password"
-              className="form-style w-full  bg-gray-400 text-white-100 py-2 rounded-lg px-2 !pr-10"
+              className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
               className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
               {showPassword ? (
-                <AiOutlineEyeInvisible fontSize={24} fill="#0b0d10" />
+                <AiOutlineEyeInvisible className="text-[16px] text-gray-400"/>
               ) : (
-                <AiOutlineEye fontSize={24} fill="#0b0d10" />
+                <AiOutlineEye className="text-[16px] text-gray-400"/>
               )}
             </span>
           </label>
@@ -155,16 +155,16 @@ function SignupForm() {
               value={confirmPassword}
               onChange={handleOnChange}
               placeholder="Confirm Password"
-              className="fform-style w-full !pr-10   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+              className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
             />
             <span
               onClick={() => setShowConfirmPassword((prev) => !prev)}
               className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
               {showConfirmPassword ? (
-                <AiOutlineEyeInvisible fontSize={24} fill="#0b0d10" />
+                <AiOutlineEyeInvisible className="text-[16px] text-gray-400"/>
               ) : (
-                <AiOutlineEye fontSize={24} fill="#0b0d10" />
+                <AiOutlineEye className="text-[16px] text-gray-400"/>
               )}
             </span>
           </label>

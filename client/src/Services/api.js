@@ -22,7 +22,7 @@ export const endpoints = {
   }
   
 export const expenseEndPoints = {
-    ADD_EXPENSE_API : BASE_URL + "/expense/addExpense/${group._id}",
+    ADD_EXPENSE_API : BASE_URL + "/expense/addExpense",
     UPDATE_EXPENSE_API : BASE_URL + "/expense/updateExpense",
     VIEW_EXPENSE_API : BASE_URL + "/expense/viewExpense",
     DELETE_EXPENSE_API : BASE_URL + "/expense/deleteExpense",

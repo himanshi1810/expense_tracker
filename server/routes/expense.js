@@ -3,7 +3,7 @@ const { auth } = require("../middlewares/auth");
 const { addExpense, editExpense, viewExpense, deleteExpense, viewGroupDailyExpenses, viewGroupMonthlyExpenses, groupTotalExpense,viewUserExpenses, viewRecentUserExpenses, viewUserMonthlyExpense, viewUserDailyExpense, viewGroupRecentExpense } = require("../controllers/Expense");
 const router = express.Router();
 
-router.post("/addExpense/:id", auth, addExpense);
+router.post("/addExpense", auth, addExpense);
 router.post("/updateExpense", auth, editExpense);
 router.get("/viewExpense", viewExpense);
 router.delete("/deleteExpense", auth, deleteExpense);

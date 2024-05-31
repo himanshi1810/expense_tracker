@@ -69,7 +69,7 @@ export default function ChangeProfilePicture() {
         />
         <div className=" flex items-center justify-center ">
           <label htmlFor="fileInput">
-            <div className="absolute bottom-16 right-3 rounded-full bg-blue-400 p-1 shadow-md cursor-pointer">  <FiEdit2 className="text-white text-lg" />
+            <div className="absolute bottom-16 right-3 rounded-full bg-gray-400 p-1 shadow-md cursor-pointer">  <FiEdit2 className="text-white text-lg" />
             </div>
           </label>
         </div>

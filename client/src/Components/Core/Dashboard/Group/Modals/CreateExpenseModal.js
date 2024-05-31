@@ -32,7 +32,7 @@ function CreateExpenseModal({setAddExpenseModal}) {
         formData.append("expenseDescription", data.expenseDescription);
         formData.append("expenseAmount", data.expenseAmount);
         formData.append("expenseType", data.expenseType);
-    
+        formData.append("groupId", id);
         // Append expenseTo as an array
         formData.append("expenseTo", data.expenseTo);
     

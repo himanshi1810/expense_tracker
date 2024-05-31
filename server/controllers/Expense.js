@@ -6,144 +6,150 @@ const Group = require("../models/Group");
 const User = require("../models/User");
 const { addSplit, clearSplit } = require("./Group");
 
-exports.addExpense = async (req, res) => {
-    try {
-        const {expenseName, expenseDescription,  expenseAmount, expenseType} = req.body;
-        const groupId = req.params.id;
-        const expenseFrom  = req.user.id;
-        let expenseTo = req.body.expenseTo;
-       
+const { Mutex } = require('async-mutex');
+const mutex = new Mutex();
 
-        
+exports.addExpense = async (req, res) => {
+    const release = await mutex.acquire();
+    try {
+        const { expenseName, expenseDescription, groupId, expenseAmount, expenseType } = req.body;
+        const expenseFrom = req.user.id;
+        let expenseTo = req.body.expenseTo;
 
         console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription)
-        if(!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription){
+        if (!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription) {
             return res.status(400).json({
-                success : false,
-                message : "All the details is necessary"
-            }) 
+                success: false,
+                message: "All the details are necessary"
+            });
         }
-        console.log("Expense to 1 : ", typeof(expenseTo));
-        expenseTo = expenseTo.split(',');
-         console.log("Expense to 2 : ", expenseTo);
-        if(expenseTo.length==1 && expenseFrom===expenseTo[0]){
-            return res.status(400).json({
-                success : true,
-                message : "You can not add individual expense in the group"
-            })
-        }
-        const group = await Group.findById(groupId);
-        if(!group){
-            return res.status(400).json({
-                success : false,
-                message : "No group exist"
-            })
-        }
-        const owner = await User.findById(expenseFrom);
-        if(!owner){
-            return res.status(400).json({
-                success : false,
-                message : "Owner not exist"
-            })
-        }
-        //console.log("Owner : ", owner);
-        let memebrsTo = [];
-        if(!group.groupMembers.includes(expenseFrom)){
-            return res.status(400).json({
-                success : false,
-                message : "No User exist in group"
-            })
-        }
-        if(expenseTo.includes(owner.email)){
-            memebrsTo.push(owner._id)
-        }
-       
 
-        for(let member of expenseTo){
-            // Parse the email from the array if it's in the format of ["email"]
+        console.log("Expense to 1 : ", typeof (expenseTo));
+        expenseTo = expenseTo.split(',');
+        console.log("Expense to 2 : ", expenseTo);
+        if (expenseTo.length == 1 && expenseFrom === expenseTo[0]) {
+            return res.status(400).json({
+                success: true,
+                message: "You cannot add individual expense in the group"
+            });
+        }
+
+        const group = await Group.findById(groupId);
+        if (!group) {
+            return res.status(400).json({
+                success: false,
+                message: "No group exists"
+            });
+        }
+
+        const owner = await User.findById(expenseFrom);
+        if (!owner) {
+            return res.status(400).json({
+                success: false,
+                message: "Owner does not exist"
+            });
+        }
+
+        let membersTo = [];
+        if (!group.groupMembers.includes(expenseFrom)) {
+            return res.status(400).json({
+                success: false,
+                message: "No User exists in group"
+            });
+        }
+
+        if (expenseTo.includes(owner.email)) {
+            membersTo.push(owner._id)
+        }
+
+        for (let member of expenseTo) {
             const email = Array.isArray(member) ? member[0] : member;
-            if(email != expenseFrom){
+            if (email != expenseFrom) {
                 console.log("Member email : ", email);
                 const memberSplit = await User.findOne({ email: email });
                 console.log("Member : ", memberSplit);
-                if(memberSplit == null){
+                if (memberSplit == null) {
                     return res.status(400).json({
                         success: false,
                         message: "User does not exist"
                     });
                 }
-        
-                // Only proceed if memberSplit is not null
-                memebrsTo.push(memberSplit._id);
+
+                membersTo.push(memberSplit._id);
             }
         }
-        
-        const expensePerMember = Number(expenseAmount) / memebrsTo.length;
+
+        const expensePerMember = Number(expenseAmount) / membersTo.length;
 
         const expenseObj = {
-            groupId : groupId,
-            expenseName : expenseName,
-            expenseDescription : expenseDescription,
-            expenseAmount : expenseAmount,
-            expenseCurrency : "INR",
-            expenseOwner : owner._id,
-            expenseMembers : memebrsTo,
-            expensePerMember : expensePerMember,
-            createdAt : new Date(),
-            expenseType : expenseType
+            groupId: groupId,
+            expenseName: expenseName,
+            expenseDescription: expenseDescription,
+            expenseAmount: expenseAmount,
+            expenseCurrency: "INR",
+            expenseOwner: owner._id,
+            expenseMembers: membersTo,
+            expensePerMember: expensePerMember,
+            createdAt: new Date(),
+            expenseType: expenseType
         }
+
         const expense = await Expense.create(expenseObj);
         console.log("Here");
-        const updateGroup = await addSplit(groupId, owner._id, memebrsTo, expenseAmount);
+        const updateGroup = await addSplit(groupId, owner._id, membersTo, expenseAmount);
         console.log("Here");
+        
         return res.status(200).json({
-            success : true,
-            message : "Expense added successfully",
-            data : {
-                expensen : expense,
-                groupUpdate : updateGroup
+            success: true,
+            message: "Expense added successfully",
+            data: {
+                expense: expense,
+                groupUpdate: updateGroup
             }
-        })
+        });
 
     } catch (error) {
-        console.log("Error occured while adding exense", error);
+        console.log("Error occurred while adding expense", error);
         return res.status(500).json({
-            success : false,
-            message : "Error occured while adding expense",
-            error : error.message
-        })
-
+            success: false,
+            message: "Error occurred while adding expense",
+            error: error.message
+        });
+    } finally {
+        release(); // Release the mutex
     }
 }
+
 exports.editExpense = async (req, res) => {
+    const release = await mutex.acquire(); // Acquire the mutex
     try {
         const {expenseId, expenseName, expenseDescription, groupId, expenseTo, expenseAmount, expenseType} = req.body;
         const expenseFrom = req.user.id;
         if(!expenseId || !expenseFrom || !groupId || !expenseTo || !expenseAmount){
             return res.status(400).json({
                 success : false,
-                message : "All the details is necessary"
+                message : "All the details are necessary"
             }) 
         }
         const oldExpense = await Expense.findById(expenseId);
         if(!oldExpense){
             return res.status(400).json({
                 success : false,
-                message : "No expense exist"
+                message : "No expense exists"
             })
         }
         const group = await Group.findById(groupId);
         if(!group){
             return res.status(400).json({
                 success : false,
-                message : "No group exist"
+                message : "No group exists"
             })
         }
         const owner = await User.findOne({email : expenseFrom});
         if(!owner){
             return res.status(400).json({
                 success : false,
-                message : "No User exist"
+                message : "No User exists"
             })
         }
         let memberTo = [];
@@ -152,7 +158,7 @@ exports.editExpense = async (req, res) => {
         if(!group.groupMembers.includes(owner._id)){
             return res.status(400).json({
                 success : false,
-                message : "No User exist in group"
+                message : "No User exists in group"
             })
         }
         if(expenseTo.includes(expenseFrom)){
@@ -160,36 +166,24 @@ exports.editExpense = async (req, res) => {
         }
 
         for(let member of expenseTo){
-            if(member!= expenseFrom){
+            if(member != expenseFrom){
                 const memberSplit = await User.findOne({email : member});
-                if(!member){
+                if(!memberSplit){
                     return res.status(400).json({
                         success : false,
-                        message : "No User exist"
+                        message : "No User exists"
                     })
                 }
                 if(!group.groupMembers.includes(memberSplit._id)){
                     return res.status(400).json({
                         success : false,
-                        message : "No User exist in group"
+                        message : "No User exists in group"
                     })
                 }
                 memberTo.push(memberSplit._id);
             }
         }
-        const expensePerMemebr = expenseAmount/expenseTo.length;
-        // const expenseObj = {
-        //     groupId : groupId,
-        //     expenseName : expenseName,
-        //     expenseDescription : expenseDescription,
-        //     expenseAmount : expenseAmount,
-        //     expenseCurrency : "INR",
-        //     expenseOwner : expenseFrom,
-        //     expenseMembers : expenseTo,
-        //     expensePerMember : expensePerMemebr,
-        //     createdAt : new Date(),
-        //     expenseType : expenseType
-        // }
+        const expensePerMemebr = expenseAmount / expenseTo.length;
         const newExpense = await Expense.findByIdAndUpdate({_id : expenseId}, {
             $set : {
                 groupId : groupId,
@@ -203,42 +197,46 @@ exports.editExpense = async (req, res) => {
                 createdAt : new Date(),
                 expenseType : expenseType
             }
-        }, {new : true})
-        console.log("Members to : ",);
+        }, {new : true});
+        console.log("Members to : ", memberTo);
         updateGroup = await addSplit(groupId, owner._id, memberTo, expenseAmount);
         return res.status(200).json({
             success : true,
-            message : "Expense added successfully",
+            message : "Expense updated successfully",
             data : {
-                expensen : newExpense,
+                expense : newExpense,
                 groupUpdate : updateGroup
             }
-        })
+        });
 
     } catch (error) {
-        console.log("Error occured while updating  exense", error);
+        console.log("Error occurred while updating expense", error);
         return res.status(500).json({
             success : false,
-            message : "Error occured while updating expense",
+            message : "Error occurred while updating expense",
             error : error.message
-        })
+        });
+    } finally {
+        release(); // Release the mutex
     }
-}
-exports.deleteExpense = async(req, res) => {
+};
+
+exports.deleteExpense = async (req, res) => {
+    const release = await mutex.acquire(); // Acquire the mutex
     try {
         const expenseId = req.body.expenseId;
         if(!expenseId){
             return res.status(400).json({
                 success : false,
                 message : "Expense Id unavailable"
-            })
+            });
         }
         const expense = await Expense.findById(expenseId);
         if(!expense){
             return res.status(400).json({
                 success : false,
                 message : "Expense not found"
-            })
+            });
         }
         await Expense.findByIdAndDelete(expenseId);
         console.log("Expense : ", expense.expenseOwner, expense.expenseMembers); 
@@ -247,16 +245,19 @@ exports.deleteExpense = async(req, res) => {
             success : true,
             message : "Expense deleted",
             data : updatedGroup
-        })
+        });
     } catch (error) {
-        console.log("Error occured while deleting exense", error);
+        console.log("Error occurred while deleting expense", error);
         return res.status(500).json({
             success : false,
-            message : "Error occured while deleting expense",
+            message : "Error occurred while deleting expense",
             error : error.message
-        })
+        });
+    } finally {
+        release(); // Release the mutex
     }
-}
+};
+
 
 exports.viewExpense = async(req, res) => {
     try {
