@@ -13,7 +13,8 @@ const {
     VIEW_RECENT_USER_EXPENSE_API,
     VIEW_USER_MONTHLY_EXPENSE_API,
     VIEW_USER_DAILY_EXPENSE_API,
-    VIEW_GROUP_RECENT_EXPENSES_API
+    VIEW_GROUP_RECENT_EXPENSES_API,
+    FETCH_GROUP_MEMBERS_API
 } = expenseEndPoints;
 
 //Add Expense
@@ -275,6 +276,27 @@ export const viewGroupRecentExpense = async (data, token) => {
     return result;
 };
 
+export const fetchGroupMembers = async (token, id) => {
+    let result = null;
+    const toastId = toast.loading("Loading...");
+    try {
+      const response = await apiConnector("GET", FETCH_GROUP_MEMBERS_API.replace('${group._id}', id), null, {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      });
+      console.log("Fetching group members...", response);
+      if (!response?.data?.success) {
+        throw new Error("Could not fetch");
+      }
+      toast.success("Fetched members successfully");
+      result = response?.data;
+    } catch (error) {
+      console.log("Error occurred while fetching group members:", error);
+      toast.error(error.message);
+    }
+    toast.dismiss(toastId);
+    return result;
+};
 
 
 

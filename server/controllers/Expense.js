@@ -12,10 +12,7 @@ exports.addExpense = async (req, res) => {
         const groupId = req.params.id;
         const expenseFrom  = req.user.id;
         let expenseTo = req.body.expenseTo;
-       
-
-        
-
+  
         console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription)
         if(!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription){
             return res.status(400).json({
@@ -23,6 +20,8 @@ exports.addExpense = async (req, res) => {
                 message : "All the details is necessary"
             }) 
         }
+
+
         console.log("Expense to 1 : ", typeof(expenseTo));
         expenseTo = expenseTo.split(',');
          console.log("Expense to 2 : ", expenseTo);
@@ -57,7 +56,6 @@ exports.addExpense = async (req, res) => {
         if(expenseTo.includes(owner.email)){
             memebrsTo.push(owner._id)
         }
-       
 
         for(let member of expenseTo){
             // Parse the email from the array if it's in the format of ["email"]
@@ -649,3 +647,36 @@ exports.viewUserDailyExpense = async(req, res) => {
         })
     }
 }
+exports.fetchGroupMembers = async (req, res) => {
+    try {
+        const  groupId  = req.params.id;
+    
+        if (!groupId) {
+            return res.status(400).json({
+                success: false,
+                message: "Group ID is required"
+            });
+        }
+
+        const group = await Group.findById(groupId).populate("groupMembers", "name email"); 
+        if (!group) {
+            return res.status(404).json({
+                success: false,
+                message: "Group not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Group members fetched successfully",
+            data: group.groupMembers
+        });
+    } catch (error) {
+        console.error("Error occurred while fetching group members:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred while fetching group members",
+            error: error.message
+        });
+    }
+};

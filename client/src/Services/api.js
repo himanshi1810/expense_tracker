@@ -33,7 +33,8 @@ export const expenseEndPoints = {
     VIEW_RECENT_USER_EXPENSE_API : BASE_URL + "/expense/viewRecentUserExpense",
     VIEW_USER_MONTHLY_EXPENSE_API : BASE_URL + "/expense/viewUserMonthlyExpense",
     VIEW_USER_DAILY_EXPENSE_API : BASE_URL + "/expense/viewUserDailyExpense",
-    VIEW_GROUP_RECENT_EXPENSES_API : BASE_URL + "/expense/viewGroupRecentExpense"
+    VIEW_GROUP_RECENT_EXPENSES_API : BASE_URL + "/expense/viewGroupRecentExpense",
+    FETCH_GROUP_MEMBERS_API : BASE_URL + "/expense/fetchGroupMembers/${group._id}"
 
 }
 
