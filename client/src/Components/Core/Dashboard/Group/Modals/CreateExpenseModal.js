@@ -12,6 +12,7 @@ function CreateExpenseModal({setAddExpenseModal}) {
   const [loading, setLoading] = useState(true);
   let {id} = useParams();
   id = id.substring(1);
+  const [isOtherExpense, setIsOtherExpense] = useState(false); 
 
     const {
         register,
@@ -90,37 +91,52 @@ function CreateExpenseModal({setAddExpenseModal}) {
                           }        
                       </div>
 
-                      {/* amount and type div */}
-                      <div className='flex flex-col gap-5 lg:flex-row'>
+                        {/* amount and type div */}
+                        <div className='flex flex-col gap-5 lg:flex-row'>
                         <div className='flex flex-col gap-2 lg:w-[48%]'>
                             <label htmlFor='expenseAmount'>Expense Amount <sup className='text-pink-200'>*</sup></label>
                             <input
-                                    id='expenseAmount'
-                                    {...register("expenseAmount", {required:true})}
-                                    placeholder='2000'
-                                    className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md'></input>
-                            {
-                                errors.expenseAmount && (
-                                    <span>Expense Amount is require**</span>
-                                )
-                            }        
+                            id='expenseAmount'
+                            {...register("expenseAmount", { required: true })}
+                            placeholder='2000'
+                            className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md'></input>
+                            {errors.expenseAmount && (
+                            <span>Expense Amount is required**</span>
+                            )}
                         </div>
                         <div className='flex flex-col gap-2 lg:w-[48%]'>
                             <label htmlFor='expenseType'>Expense Type <sup className='text-pink-200'>*</sup></label>
+                            <select
+                            id='expenseType'
+                            {...register("expenseType", { required: true })}
+                            className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md'
+                            onChange={(e) => setIsOtherExpense(e.target.value === "Other")}
+                            >
+                            <option value="">Select type</option>
+                            <option value="Bill">Bill</option>
+                            <option value="Grocery">Grocery</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Rent">Trip</option>
+                            <option value="Rent">Food</option>
+                            <option value="Rent">Stationary</option>
+                            <option value="Other">Other</option>
+                            </select>
+                            {errors.expenseType && (
+                            <span>Expense Type is required**</span>
+                            )}
+                            {isOtherExpense && (
                             <input
-                                    id='expenseType'
-                                    {...register("expenseType", {required:true})}
-                                    placeholder='Bill'
-                                    className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md'></input>
-                            {
-                                errors.expenseType && (
-                                    <span>Expense Amount is require**</span>
-                                )
-                            }        
+                                id='otherExpenseType'
+                                {...register("otherExpenseType", { required: isOtherExpense })}
+                                placeholder='Specify other expense type'
+                                className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md mt-2'></input>
+                            )}
+                            {errors.otherExpenseType && (
+                            <span>Other Expense Type is required**</span>
+                            )}
                         </div>
-                      </div>
+                        </div>
                       
-
                       <div className='flex flex-col gap-2'>
                           <label htmlFor='expenseTo'>Add Members (Add emailId)</label>
                           {

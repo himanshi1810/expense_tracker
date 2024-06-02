@@ -1,6 +1,6 @@
-import { balanceSheet } from '../../../../Services/operations/group';
-import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { balanceSheet } from '../../../../Services/operations/group';
 import BalanceSheetCard from '../../../Common/BalanceSheetCard';
 
 function BalanceSheet() {
@@ -31,10 +31,14 @@ function BalanceSheet() {
     return () => {};
   }, [group._id, token]);
 
+  const handleSettlement = (index) => {
+    // Refresh the balance sheet data after settlement
+    setBalanceData(prevBalanceData => prevBalanceData.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="flex flex-col gap-y-6 rounded-md p-8 px-12">
       <h2 className="text-lg font-semibold text-white-100">Balance Sheet</h2>
-      {/* Conditionally render BalanceSheetCard based on balanceData availability */}
       {loading ? (
         <p>Loading balance sheet...</p>
       ) : error ? (
@@ -44,7 +48,12 @@ function BalanceSheet() {
       ) : (
         balanceData.map((data, index) => (
           <div key={index} className="mt-4">
-            <BalanceSheetCard data={data} />
+            <BalanceSheetCard 
+              data={data} 
+              token={token} 
+              groupId={group._id} 
+              onSettlement={() => handleSettlement(index)} 
+            />
           </div>
         ))
       )}
