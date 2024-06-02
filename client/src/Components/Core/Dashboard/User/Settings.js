@@ -10,7 +10,7 @@ export default function Settings() {
         Edit Profile
       </h1>
      <div className="flex justify-center items-center">
-      <div className="w-[60%]">
+      <div className="mx-4 md:w-[60%]">
           {/* Change Profile Picture */}
         <ChangeProfilePicture />
         {/* Profile */}

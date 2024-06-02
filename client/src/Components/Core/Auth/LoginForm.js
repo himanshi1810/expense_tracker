@@ -35,7 +35,7 @@ function LoginForm() {
         >
             <label className="w-full">
                 <p className="mb-1 text-[1rem] leading-[1.375rem] text-white">
-                    Email Address <sup className="text-white">*</sup>
+                    Email Address <sup className="text-red-400">*</sup>
                 </p>
                 <input
                     required
@@ -44,12 +44,13 @@ function LoginForm() {
                     value={email}
                     onChange={handleOnChange}
                     placeholder="Enter email address"
-                    className="form-style w-full bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                    className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
+
                 />
-            </label>
+            </label> 
             <label className="relative">
                 <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
-                    Password <sup className="text-white-100">*</sup>
+                    Password <sup className="text-red-400">*</sup>
                 </p>
                 <input
                     required
@@ -58,20 +59,20 @@ function LoginForm() {
                     value={password}
                     onChange={handleOnChange}
                     placeholder="Enter Password"
-                    className="form-style w-full !pr-10  bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+                    className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
                 />
                 <span
                     onClick={() => setShowPassword((prev) => !prev)}
                     className="absolute right-3 top-[38px] z-[10] cursor-pointer"
                 >
                     {showPassword ? (
-                        <AiOutlineEyeInvisible   fontSize={24} fill="#0b0d10" />
+                        <AiOutlineEyeInvisible  className="text-gray-400 text-[14px]"/>
                     ) : (
-                        <AiOutlineEye fontSize={24} fill="#0b0d10" />
+                        <AiOutlineEye  className="text-gray-400 text-[14px]"/>
                     )}
                 </span>
                 <Link to="/forgotPassword">
-                    <p className="mt-1 ml-auto max-w-max text-xs text-gray-300">
+                    <p className="mt-1 ml-auto max-w-max text-xs text-blue-400">
                         Forgot Password ?
                     </p>
                 </Link>

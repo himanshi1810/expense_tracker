@@ -57,7 +57,7 @@ const ContactUsForm = () => {
             name="firstname"
             id="firstname"
             placeholder="Enter first name"
-            className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+            className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
             {...register("firstname", { required: true })}
           />
           {errors.firstname && (
@@ -75,7 +75,7 @@ const ContactUsForm = () => {
             name="lastname"
             id="lastname"
             placeholder="Enter last name"
-            className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+            className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
             {...register("lastname")}
           />
         </div>
@@ -90,7 +90,7 @@ const ContactUsForm = () => {
           name="email"
           id="email"
           placeholder="Enter email address"
-          className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+          className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
           {...register("email", { required: true })}
         />
         {errors.email && (
@@ -113,7 +113,7 @@ const ContactUsForm = () => {
               name="phonenumber"
               id="phonenumber"
               placeholder="12345 67890"
-              className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+              className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
               {...register("phoneNo", {
                 required: {
                   value: true,
@@ -142,7 +142,7 @@ const ContactUsForm = () => {
           cols="30"
           rows="7"
           placeholder="Enter your message here"
-          className="form-style w-full   bg-gray-400 text-white-100 py-2 rounded-lg px-2"
+          className="form-style w-full border text-[14px] border-gray-400 bg-black-400 text-white-100 py-2 rounded-lg px-2"
           {...register("message", { required: true })}
         />
         {errors.message && (

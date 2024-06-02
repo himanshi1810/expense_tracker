@@ -20,7 +20,7 @@ const contactDetails = [
 
 const ContactDetails = () => {
   return (
-    <div className="flex flex-col gap-6 rounded-xl bg-gray-600 p-4 lg:p-6">
+    <div className="flex flex-col gap-6 rounded-xl bg-black-400 border border-gray-400 p-4 lg:p-6">
       {contactDetails.map((ele, i) => {
         let Icon = Icon1[ele.icon] || Icon2[ele.icon] || Icon3[ele.icon]
         return (

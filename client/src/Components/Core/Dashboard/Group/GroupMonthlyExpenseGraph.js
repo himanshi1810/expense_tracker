@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { viewExpense, viewGroupMonthlyExpenses, viewUserMonthlyExpense } from '../../../../Services/operations/expense';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-moment';
@@ -9,31 +7,8 @@ import 'chartjs-adapter-moment';
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, TimeScale);
 
 
-function GroupMonthlyExpenseGraph({groupId}) {
+function GroupMonthlyExpenseGraph({groupId, expenseData}) {
   const [loading, setLoading] = useState(false);
-    const [expenseData, setExpenseData] = useState([]);
-    const { user } = useSelector((state) => state.profile);
-    const { token } = useSelector((state) => state.auth);
-
-    useEffect(() => {
-        const getExpenseData = async () => {
-            try {
-                setLoading(true);
-                const data = {
-                  groupId : groupId
-                }
-                const res = await viewGroupMonthlyExpenses(data, token);
-                setExpenseData(res.data);
-                setLoading(false);
-            } catch (error) {
-                console.log("Error occurred in fetching user daily expense data: ", error);
-                setLoading(false);
-            }
-        };
-
-        getExpenseData();
-    }, []);
-
     const dataPoints = expenseData.map((item) => ({
         x: new Date(item._id.year, item._id.month - 1),
         y: item.totalExpense,
@@ -84,7 +59,7 @@ function GroupMonthlyExpenseGraph({groupId}) {
     };
 
     return (
-        <div className='h-[20.3rem] border border-gray-500 rounded-md px-7 py-3'>
+        <div className='md:h-[20.3rem] border border-gray-500 rounded-md px-7 py-3'>
             <p className='text-[16px] text-white-100'>User Monthly Expense Statistics</p>
             {!loading && expenseData.length > 0 && (
                 <Line options={options} className='' data={data} />

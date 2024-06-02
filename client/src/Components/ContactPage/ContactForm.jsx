@@ -3,7 +3,7 @@ import ContactUsForm from "./ContactUsForm";
 
 const ContactForm = () => {
   return (
-    <div className="border border-gray-500 rounded-xl p-7 lg:p-14 flex gap-3 flex-col">
+    <div className="border border-gray-400 bg-black-400 rounded-xl p-7 lg:p-14 flex gap-3 flex-col">
       <h1 className="text-4xl leading-10 font-semibold text-white-100">
         Got a Idea? We&apos;ve got the skills. Let&apos;s team up
       </h1>

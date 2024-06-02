@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { viewUserGroup } from '../../../../Services/operations/group';
 import GroupCard from '../../../Common/GroupCard';
 import { NavLink } from 'react-router-dom';
-import {setGroup} from "../../../../Reducer/Slices/groupSlice"
 import CreateGroupModal from './Modals/CreateGroupModal';
 function Group() {
   const [loading, setLoading] = useState(false);
@@ -39,7 +38,7 @@ function Group() {
       <div className='flex justify-end'>
         <button 
                 onClick={()=>(setOpenModal(true))}
-                className='text-white flex gap-2 px-4 py-2 text-[14px] bg-blue-400 hover:bg-black-400 hover:border hover:border-gray-400 hover:scale-90 transition-all duration-700 justify-center items-center rounded-md'>
+                className='text-white flex gap-2 px-4 py-2 text-[14px] mr-3 md:mr-0 bg-blue-400 hover:bg-black-400 hover:border hover:border-gray-400 hover:scale-90 transition-all duration-700 justify-center items-center rounded-md'>
           
           <MdGroupAdd className='text-[18px]' />
           Create Group
@@ -50,7 +49,7 @@ function Group() {
           groups.map((group, index) => (
             <div key={index} onClick={(event) => { 
               event.preventDefault(); 
-              dispatch(setGroup(group));
+              ;
             }}>
             <NavLink to={`/dashboard/aboutGroup/:${group._id}`}>
               <GroupCard group={group}></GroupCard>

@@ -9,8 +9,8 @@ import ViewGroupDailyExpense from './ViewGroupDailyExpense';
 import GroupMonthlyExpenseGraph from './GroupMonthlyExpenseGraph';
 import GroupMemberCard from '../../../Common/GroupMemberCard';
 import GroupRecentExpenses from './GroupRecentExpenses';
-import { viewGroupRecentExpense } from '../../../../Services/operations/expense';
-import { useFetcher, useNavigate, useParams } from 'react-router-dom';
+import { viewGroupDailyExpenses, viewGroupMonthlyExpenses, viewGroupRecentExpense } from '../../../../Services/operations/expense';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddMemberModal from './Modals/AddMemberModal';
 import CreateExpenseModal from './Modals/CreateExpenseModal';
 import { viewGroup } from '../../../../Services/operations/group';
@@ -20,53 +20,39 @@ function AboutGroup() {
   let {id} = useParams();
   id = id.substring(1);
   const [recentExpenses, setRecentExpenses] = useState([]);
+  const [monthlyExoenseData, setMonthlyexpenseData] = useState([]);
+  const [dailyExpenseData, setDailyExpenseData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addExpenseModal, setAddExpenseModal] = useState(false);
   const [addMemberModal, setAddMemberModal] = useState(false);
   const nevigate = useNavigate();
   const [group, setGroup] = useState(null);
-  const getGroupRecentExpense = async() => {
+  const fetchData = async() => {
     const toastId = toast.loading("Loading....");
+    setLoading(true);
     try {
-      const data = {
-        groupId : id
-      }
-      const res = await viewGroupRecentExpense(data, token);
-      console.log("Recent Expenses", res);
-      setRecentExpenses(res.data);
+      const [groupRes, recentExpenses, dailyExpense, monthlyExpense] = await Promise.all([
+        viewGroup({groupId : id}),
+        viewGroupRecentExpense({groupId : id}, token),
+        viewGroupDailyExpenses({groupId : id}, token),
+        viewGroupMonthlyExpenses({groupId : id}, token)
+      ])
       
+      setGroup(groupRes.group)
+      setRecentExpenses(recentExpenses.data)
+      setDailyExpenseData(dailyExpense.data)
+      setMonthlyexpenseData(monthlyExpense.data)
     } catch (error) {
-      console.log("Error occured while fetching group recent expense : ", error.message);
+      console.log("Error occured while fetching data for about group page", error.message)
     }
-    toast.dismiss(toastId);
+    finally{
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
   }
   useEffect(()=>{
-    
-    const getGroupData = async () => {
-      const toastId = toast.loading("Loading....");
-      try {
-        const data = {
-          groupId : id
-        }
-        console.log("data : ", data);
-        const res = await viewGroup(data);
-        console.log("res",res);
-        setGroup(res.group);
-        
-        //console.log(group)
-      } catch (error) {
-        console.log("Error occured while fetching group : ", error.message);
-      }
-      toast.dismiss(toastId);
-    }
-    getGroupData();
-  }, [addMemberModal])
-  useEffect(()=>{
-    setLoading(true);
-    getGroupRecentExpense();
-    setLoading(false);
-  }, [])
-  
+    fetchData();
+  },[addExpenseModal, addMemberModal])  
   if(!group){
     return <div className='loader'></div>
   }
@@ -77,33 +63,34 @@ function AboutGroup() {
           <p className='text-white text-[24px] font-semibold'>{group.groupName}</p>
         </div>
 
-        <div className='flex -mt-3 gap-5 justify-end items-center'>
+        <div className='flex -mt-3 gap-5 justify-center flex-wrap md:justify-end items-center'>
           <button onClick={() => (nevigate(`/dashboard/aboutGroup/updateGroup/${group._id}`))} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700 justify-center items-center px-4 py-1 rounded-md'>
             <MdOutlineBrowserUpdated className='text-[15px]'/>
-            Update
+           <p>Update</p>
           </button>
           <button onClick={() => (nevigate(`/dashboard/aboutGroup/balanceSheet/${group._id}`))} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700  justify-center items-center px-4 py-1 rounded-md'>
             <GrTransaction />
-            BalanceSheet
+            <p className='whitespace-nowrap'>Balance Sheet</p>
           </button>
           <button onClick={()=>{setAddMemberModal(true)}} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700  justify-center items-center px-4 py-1 rounded-md'>
             <IoIosPersonAdd></IoIosPersonAdd>
-            Add Member
+            <p className='whitespace-nowrap'>Add Member</p>
           </button>
           <button onClick={()=>(setAddExpenseModal(true))} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700  justify-center items-center px-4 py-1 rounded-md'>
             <MdAdd></MdAdd>
-            Add Expense
+            <p className='whitespace-nowrap'>Add Expense</p>
           </button>
         </div>
         
         <div className='flex flex-col gap-3'>
           <p className='text-[18px] text-white-100 font-semibold'>About Group</p>
-          <div className='flex gap-5 justify-start'>
-          <div className='w-[65%] flex flex-col gap-5'>
-              <ViewGroupDailyExpense groupId={id}></ViewGroupDailyExpense>
-              <GroupMonthlyExpenseGraph groupId={id}></GroupMonthlyExpenseGraph>
-        </div> 
-            <div className='flex flex-col gap-5'>
+          <div className='flex gap-5 flex-col md:flex-row justify-start'>
+          <div className='md:w-[65%] flex flex-col gap-5'>
+              <ViewGroupDailyExpense groupId={id} expenseData={dailyExpenseData}></ViewGroupDailyExpense>
+              <GroupMonthlyExpenseGraph groupId={id} expenseData={monthlyExoenseData}></GroupMonthlyExpenseGraph>
+          </div> 
+
+          <div className='flex flex-col gap-5'>
               <div className='flex flex-col gap-3 border text-gray-400 border-gray-500 h-[20.3rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
                 <div>Owner : {group.groupOwber}</div>
                 <div>Created On : {formatDate(group.createdAt)}</div>
