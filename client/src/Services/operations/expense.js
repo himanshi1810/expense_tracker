@@ -22,7 +22,7 @@ export const addExpense = async (data, token, id) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("POST", ADD_EXPENSE_API, data, {
+        const response = await apiConnector("POST", ADD_EXPENSE_API.replace('${group._id}', id), data, {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         });

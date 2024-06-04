@@ -16,8 +16,7 @@ exports.addExpense = async (req, res) => {
         const expenseFrom = req.user.id;
         let expenseTo = req.body.expenseTo;
   
-
-        console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription)
+        console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription);
         if (!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription) {
             return res.status(400).json({
                 success: false,
@@ -25,15 +24,12 @@ exports.addExpense = async (req, res) => {
             });
         }
 
-
         console.log("Expense to 1 : ", typeof(expenseTo));
-
-        console.log("Expense to 1 : ", typeof (expenseTo));
         expenseTo = expenseTo.split(',');
         console.log("Expense to 2 : ", expenseTo);
         if (expenseTo.length == 1 && expenseFrom === expenseTo[0]) {
             return res.status(400).json({
-                success: true,
+                success: false,
                 message: "You cannot add individual expense in the group"
             });
         }
@@ -62,17 +58,13 @@ exports.addExpense = async (req, res) => {
             });
         }
 
-        if (expenseTo.includes(owner.email)) {
-            membersTo.push(owner._id)
-        }
-
         for (let member of expenseTo) {
             const email = Array.isArray(member) ? member[0] : member;
-            if (email != expenseFrom) {
+            if (email !== owner.email) {
                 console.log("Member email : ", email);
                 const memberSplit = await User.findOne({ email: email });
                 console.log("Member : ", memberSplit);
-                if (memberSplit == null) {
+                if (!memberSplit) {
                     return res.status(400).json({
                         success: false,
                         message: "User does not exist"
@@ -82,6 +74,9 @@ exports.addExpense = async (req, res) => {
                 membersTo.push(memberSplit._id);
             }
         }
+
+        
+        membersTo.push(owner._id);
 
         const expensePerMember = Number(expenseAmount) / membersTo.length;
 
@@ -96,7 +91,7 @@ exports.addExpense = async (req, res) => {
             expensePerMember: expensePerMember,
             createdAt: new Date(),
             expenseType: expenseType
-        }
+        };
 
         const expense = await Expense.create(expenseObj);
         console.log("Here");
@@ -123,6 +118,7 @@ exports.addExpense = async (req, res) => {
         release(); // Release the mutex
     }
 }
+
 
 exports.editExpense = async (req, res) => {
     const release = await mutex.acquire(); // Acquire the mutex
