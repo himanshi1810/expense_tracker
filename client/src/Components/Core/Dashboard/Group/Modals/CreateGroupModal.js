@@ -9,8 +9,9 @@ import AddMemberDynamicField from '../../../../Common/AddMemberDynamicField';
 function CreateGroupModal({setOpenModal}) {
     const {token} = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(true);
-   
-
+    const user = useSelector((state) => state.profile);
+    const userEmail = user.user.email
+    console.log("Printing user : ", userEmail);
     const {
         register,
         handleSubmit,
@@ -19,7 +20,7 @@ function CreateGroupModal({setOpenModal}) {
         getValues,
         formState : {errors}
     } = useForm();
-    
+    const defaultValue = [{email : userEmail}]
     const submitHandler = async (data) => {
         const toastId = toast.loading('Loading...', { autoClose: false }); 
         //toast.loading("Loading....");
@@ -95,6 +96,7 @@ function CreateGroupModal({setOpenModal}) {
                              label="Add members(Enter email id)"
                              register={register}
                              control={control}
+                             defaultValue = {defaultValue}
                              setValue={setValue}
                              errors={errors}></AddMemberDynamicField>
                     <button type='submit' className='bg-blue-400 text-white-100 px-3 py-2 rounded-md self-center hover:bg-black-400 hover:border hover:shadow-md hover:border-gray-400 hover:scale-90 transition-all duration-500'>Create</button>

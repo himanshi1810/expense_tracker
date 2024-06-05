@@ -30,6 +30,7 @@ function Group() {
   if(loading){
     return <div className='loader'></div>
   }
+  
   return (
     <div className='flex flex-col gap-2'>
       <p className='text-[22px] font-semibold text-white-100'>
@@ -44,7 +45,13 @@ function Group() {
           Create Group
         </button>
       </div>
-      <div className='flex flex-col gap-7 mt-4'>
+      {
+          groups.length==0 && (<div className='flex justify-center items-center'>
+            <p className='text-[16px] text-white'>No group yet</p>
+          </div>)
+        
+      }
+      {groups.length>0 && <div className='flex flex-col gap-7 mt-4'>
         {
           groups.map((group, index) => (
             <div key={index} onClick={(event) => { 
@@ -57,7 +64,7 @@ function Group() {
           </div>
           ))
         }
-      </div>
+      </div>}
       {
         openModal && (
           <CreateGroupModal setOpenModal={setOpenModal}></CreateGroupModal>

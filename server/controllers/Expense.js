@@ -123,8 +123,11 @@ exports.addExpense = async (req, res) => {
 exports.editExpense = async (req, res) => {
     const release = await mutex.acquire(); // Acquire the mutex
     try {
-        const {expenseId, expenseName, expenseDescription, groupId, expenseTo, expenseAmount, expenseType} = req.body;
+        console.log("body of edit expense", req.body)
+        const {expenseId, expenseName, expenseDescription, groupId, expenseAmount, expenseType} = req.body;
         const expenseFrom = req.user.id;
+        const expenseTo = JSON.parse(req.body.expenseTo)
+        console.log("expense Memebrs", typeof(expenseTo))
         if(!expenseId || !expenseFrom || !groupId || !expenseTo || !expenseAmount){
             return res.status(400).json({
                 success : false,
@@ -145,7 +148,7 @@ exports.editExpense = async (req, res) => {
                 message : "No group exists"
             })
         }
-        const owner = await User.findOne({email : expenseFrom});
+        const owner = await User.findById(expenseFrom);
         if(!owner){
             return res.status(400).json({
                 success : false,
@@ -171,7 +174,7 @@ exports.editExpense = async (req, res) => {
                 if(!memberSplit){
                     return res.status(400).json({
                         success : false,
-                        message : "No User exists"
+                        message : "No User exists from memebrs"
                     })
                 }
                 if(!group.groupMembers.includes(memberSplit._id)){
@@ -440,7 +443,7 @@ exports.viewGroupRecentExpense = async(req, res) => {
     try {
         const {groupId} = req.body;
         console.log("request", req);
-        const groupRecentExpense = await Expense.find({groupId:groupId}).sort({createdAt : -1}).limit(5);
+        const groupRecentExpense = await Expense.find({groupId:groupId}).sort({createdAt : -1}).limit(5).populate('expenseMembers').populate('groupId').exec();
         if(groupRecentExpense.length==0){
             return res.status(400).json({
                 success: false,
@@ -469,6 +472,7 @@ exports.viewUserExpenses = async(req, res) => {
             .limit(10)
             .sort({"createdAt":-1})
             .populate("groupId")
+            .populate("expenseMembers")
             .exec();
         // if(expenseData.length==0){
         //     return res.status(400).json({

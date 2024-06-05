@@ -56,6 +56,7 @@ function AboutGroup() {
   if(!group){
     return <div className='loader'></div>
   }
+  
   return (
     <div>
       <div className='flex flex-col gap-10'>
