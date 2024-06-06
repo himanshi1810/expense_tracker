@@ -1,26 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { viewGroup } from '../../../../Services/operations/group';
 
+
 function ViewGroupMember() {
+  
   const [groupData, setGroupData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth);
-  const { group } = useSelector((state) => state.group);
+  let { id } = useParams();
+  
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      
+      const result = await viewGroup({groupId : id});
+      if (result) {
+        setGroupData(result.group); 
+      }
+    } catch (error) {
+      console.error('Error fetching group data:', error);
+      toast.error("Error fetching data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchGroupData() {
-      try {
-        const data = { groupId: group._id }; 
-        const result = await viewGroup(data, token);
-        setGroupData(result.group);
-      } catch (error) {
-        console.error('Error fetching group data:', error);
-        
-      }
-    }
-
-    fetchGroupData();
-  }, [token]);
+    fetchData();
+  }, [id, token]);
+ 
 
   return (
     <div className="my-10">

@@ -1,6 +1,6 @@
 import { FiTrash2 } from "react-icons/fi"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { deleteGroup } from "../../../../Services/operations/group"
 
@@ -10,6 +10,7 @@ export default function DeleteGroup() {
   const { user } = useSelector((state) => state.profile)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const {id} = useParams()
 
   async function handleDeleteAccount() {
     try {
@@ -17,7 +18,7 @@ export default function DeleteGroup() {
       console.log("Group Owner" ,user._id);
       
       if (group.groupOwner === user._id) {
-        dispatch(deleteGroup( group._id , user._id, user.token,navigate));
+        dispatch(deleteGroup( id , user._id, user.token,navigate));
         navigate('/dashboard/group');
       } else {
         // Display an error message or prevent deletion if the user is not the owner

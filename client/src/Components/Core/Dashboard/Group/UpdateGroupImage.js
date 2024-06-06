@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { updateGroupImage } from "../../../../Services/operations/group";
 import IconBtn from "../../../Common/IconBtn";
+import { useParams } from "react-router-dom";
 
 export default function UpdateGroupImage() {
   const { token } = useSelector((state) => state.auth);
  const {group} = useSelector((state) => state.group);
   const dispatch = useDispatch();
+  let {id} = useParams()
 
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -41,7 +43,7 @@ export default function UpdateGroupImage() {
       setLoading(true);
       const formData = new FormData();
       formData.append("displayPicture", imageFile);
-      dispatch(updateGroupImage(token, formData, group._id)).then(() => {
+      dispatch(updateGroupImage(token, formData, id)).then(() => {
         setLoading(false);
       });
     } catch (error) {

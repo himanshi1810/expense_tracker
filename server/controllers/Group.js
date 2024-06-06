@@ -196,7 +196,7 @@ exports.updateGroup = async (req, res) => {
 
 exports.viewGroup = async (req, res) => {
     try {
-        const { groupId } = req.body;
+        const {groupId}  = req.body;
         console.log("Group Data: ", req.body);
         const group = await Group.findById(groupId).populate("groupMembers");
         if (!group) {
