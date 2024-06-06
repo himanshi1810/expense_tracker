@@ -7,7 +7,7 @@ import IconBtn from "../../../Common/IconBtn";
 import DeleteGroup from "./DeleteGroup";
 import ViewGroupMember from "./ViewGroupMember";
 import UpdateGroupImage from "./UpdateGroupImage";
-
+import { useParams } from "react-router-dom";
 
 export default function UpdateGroup() {
 
@@ -15,6 +15,9 @@ export default function UpdateGroup() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let { id } = useParams();
+  
+  console.log(id)
 
   const {
     register,
@@ -26,8 +29,8 @@ export default function UpdateGroup() {
     console.log("Form Data - ", data)
 
     try {
-    
-      dispatch(updateGroup(token,data,group._id)); 
+      console.log(id)
+      dispatch(updateGroup(token,data,id)); 
       
     } catch (error) {
       console.log('ERROR MESSAGE - ', error.message);

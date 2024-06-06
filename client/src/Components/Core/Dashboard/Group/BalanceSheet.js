@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { balanceSheet } from '../../../../Services/operations/group';
 import BalanceSheetCard from '../../../Common/BalanceSheetCard';
+import { useParams } from 'react-router-dom';
 
 function BalanceSheet() {
   const [balanceData, setBalanceData] = useState([]);
@@ -9,12 +10,13 @@ function BalanceSheet() {
   const [error, setError] = useState(null);
   const { group } = useSelector((state) => state.group);
   const { token } = useSelector((state) => state.auth);
+  const {id} = useParams()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = { groupId: group._id };
+        const data = { groupId: id };
         const response = await balanceSheet(data, token);
         console.log("Balance Sheet Data:", response.data);
         setBalanceData(response.data);
@@ -29,7 +31,7 @@ function BalanceSheet() {
 
     // Cleanup function to prevent memory leaks
     return () => {};
-  }, [group._id, token]);
+  }, [id, token]);
 
   const handleSettlement = (index) => {
     // Refresh the balance sheet data after settlement
@@ -51,7 +53,7 @@ function BalanceSheet() {
             <BalanceSheetCard 
               data={data} 
               token={token} 
-              groupId={group._id} 
+              groupId={id} 
               onSettlement={() => handleSettlement(index)} 
             />
           </div>
