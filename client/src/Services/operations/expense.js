@@ -43,6 +43,7 @@ export const addExpense = async (data, token, id) => {
 //Update Expense
 export const updateExpense = async (data, token) => {
     let result = null;
+    
     const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", UPDATE_EXPENSE_API, data, {
