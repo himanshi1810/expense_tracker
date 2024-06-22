@@ -103,7 +103,7 @@ function AboutGroup() {
                   <p className='text-white-100 text-[15px]'>Group Members</p>
                   {
                     group.groupMembers.map((member, index)=>(
-                      <GroupMemberCard index={index} member={member}></GroupMemberCard>
+                      <GroupMemberCard key={index} member={member}></GroupMemberCard>
                     ))
                   }
               </div>

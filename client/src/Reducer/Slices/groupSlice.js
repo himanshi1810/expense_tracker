@@ -12,6 +12,7 @@ const groupSlice = createSlice({
     reducers: {
         setGroup: (state, action) => {
             state.group = action.payload;
+            localStorage.setItem("expenseGroup", JSON.stringify(action.payload));
         },
 
         setUpdatedGroup: (state, action) => {

@@ -7,7 +7,7 @@ function GroupRecentExpenses({recentExpenses}) {
       <div className='flex flex-col gap-5'>
         {
           recentExpenses.map((expense, index) => (
-            <ExpenseCard expense={expense} index={index}></ExpenseCard>
+            <ExpenseCard expense={expense} key={index}></ExpenseCard>
           ))
         }
       </div>
