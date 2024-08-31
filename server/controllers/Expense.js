@@ -395,7 +395,7 @@ exports.viewGroupMonthlyExpenses = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Group monthly expenses fetched successfully",
+            message: "Group monthly expenses fetched successfully123",
             data: expenseData
         });
     } catch (error) {
