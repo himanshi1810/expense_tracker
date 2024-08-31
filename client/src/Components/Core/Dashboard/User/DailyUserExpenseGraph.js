@@ -89,7 +89,7 @@ function DailyUserExpenseGraph() {
      }
       {
         !loading && expenseData.length==0 && (
-          <p>You have not created any expense yet</p>
+          <p>No expenses recorded in the last 30 days</p>
         )
       }
       

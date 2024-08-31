@@ -265,10 +265,12 @@ exports.deleteExpense = async (req, res) => {
 exports.viewExpense = async(req, res) => {
     try {
         const expenseId = req.body.expenseId;
+        console.log(expenseId)
         if(!expenseId){
             return res.status(400).json({
                 success : false,
                 message : "Expense Id unavalable"
+        
             })
         }
         const expense = await Expense.findById(expenseId).populate("groupId").exec();
@@ -293,6 +295,7 @@ exports.viewExpense = async(req, res) => {
     }
 }
 exports.viewGroupDailyExpenses = async (req, res) => {
+    console.log('here')
     try {
         const {groupId} = req.body;
         if (!groupId) {
@@ -328,12 +331,13 @@ exports.viewGroupDailyExpenses = async (req, res) => {
                 }
             }
         }])
-        if(expenseData.length==0){
-            return res.status(400).json({
-                success : false,
-                message : "Expense data not found"
-            })
-        }
+        console.log("here------>>>>",expenseData)
+        // if(expenseData.length==0){
+        //     return res.status(400).json({
+        //         success : false,
+        //         message : "Expense data not found"
+        //     })
+        // }
 
         return res.status(200).json({
             success: true,
@@ -538,6 +542,7 @@ exports.viewRecentUserExpenses = async(req, res) => {
     }
 }
 exports.viewUserMonthlyExpense = async(req, res) => {
+    console.log('Controller function is called');
     try {
         const userId = req.user.id;
         const userData = await User.findById(userId);
@@ -631,12 +636,12 @@ exports.viewUserDailyExpense = async(req, res) => {
                 }
             }
         }])
-        // if(expenseData.length==0){
-        //     return res.status(400).json({
-        //         success : false,
-        //         message : "Expense data not found"
-        //     })
-        // }
+        if(expenseData.length==0){
+            return res.status(400).json({
+                success : false,
+                message : "Expense data not found"
+            })
+        }
 
         return res.status(200).json({
             success : true,

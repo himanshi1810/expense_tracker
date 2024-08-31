@@ -48,7 +48,7 @@ function AboutUser() {
     <div className='flex flex-col gap-6 text-gray-400'>
       <div className='text-[22px] font-semibold text-white-100'>My Expenses</div>
       <div className='flex flex-col gap-3'>
-        <p className='text-white ext-[14px] font-semibold'>Expense Statisttics</p>
+        <p className='text-white ext-[14px] font-semibold'>Expense Statistics</p>
         <div className='flex gap-4 w-[100%] flex-col md:flex-row'>
           <div className='max-w-maxContent md:w-[100%] flex gap-3 flex-col px-3 py-3 mx-4 md:mx-0 bg-black-400 rounded-md border border-gray-300'>
             <p className='text-white'>Daily Expense</p>
