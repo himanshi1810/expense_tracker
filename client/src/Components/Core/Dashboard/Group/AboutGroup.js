@@ -106,7 +106,7 @@ function AboutGroup() {
           </div> 
 
           <div className='flex flex-col gap-5'>
-              <div className='flex flex-col gap-3 border text-white border-gray-500 h-[20.3rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
+              <div className='flex flex-col gap-3 border text-white border-gray-500 h-[22rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
                 {groupOwner && <div>Owner : {groupOwner[0].firstName}  {groupOwner[0].lastName} </div>}
                 <div>Created On : {formatDate(group.createdAt)}</div>
                 <div>Group Total : {group.groupTotal}</div>

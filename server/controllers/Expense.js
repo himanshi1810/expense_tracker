@@ -294,7 +294,6 @@ exports.viewExpense = async(req, res) => {
     }
 }
 exports.viewGroupDailyExpenses = async (req, res) => {
-    console.log('here')
     try {
         const {groupId} = req.body;
         if (!groupId) {
@@ -330,7 +329,6 @@ exports.viewGroupDailyExpenses = async (req, res) => {
                 }
             }
         }])
-        console.log("here------>>>>",expenseData)
         // if(expenseData.length==0){
         //     return res.status(400).json({
         //         success : false,
