@@ -16,7 +16,7 @@ function AddMemberDynamicField({
   });
 
   // Convert defaultValue to array of objects if necessary
-  const formattedDefaultValue = defaultValue.map(email => ({ email }));
+  const formattedDefaultValue = defaultValue.map(email => (email));
 
   //console.log("Default values : ", formattedDefaultValue);
 
@@ -42,6 +42,11 @@ function AddMemberDynamicField({
             type='email'
             placeholder="Add member's email"
             {...register(`${name}[${index}].email`)}
+            onKeyDown={(e) => {
+              if(e.key == 'Enter'){
+                e.preventDefault();
+              }
+            }}
             defaultValue={member.email}
             className='bg-black-400 w-[100%] border-[0.5px] focus:outline-none text-[14px] border-gray-500 px-3 py-2 rounded-md'
           />

@@ -116,10 +116,11 @@ export const viewGroupDailyExpenses = async (data, token) => {
         const response = await apiConnector("POST",VIEW_GROUP_DAILY_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
         });
-        console.log("View Group Daily Expenses API Response...", response);
+        //console.log("View Group Daily Expenses API Response...", response);
         if (!response?.data?.success) {
             throw new Error("Could not fetch group daily expenses");
         }
+        //console.log("In data : ", response)
         result = response?.data;
     } catch (error) {
         console.log("Error occurred while fetching group daily expenses:", error);

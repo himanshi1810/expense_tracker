@@ -11,7 +11,6 @@ const groupRoute = require("./routes/group");
 const expenseRoutes = require("./routes/expense");
 const profileRoutes = require("./routes/Profile");
 const contactRoute = require("./routes/contact");
-
 require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 

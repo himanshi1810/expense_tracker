@@ -29,7 +29,7 @@ function ExpenseCard({expense}) {
         <div className='text-gray-400 text-[14px]'>
             <p>  About : <spin>{expense?.expenseDescription}</spin></p>
         </div>
-        <div className='text-gray-400 text-[14px]flex justify-between'>
+        <div className='text-gray-400 text-[14px] gap-2 flex justify-between'>
             <p>  Expense Currency : <spin>{expense?.expenseCurrency}</spin></p>
             <p>  Expense Type : <spin>{expense?.expenseType}</spin></p>
         </div>

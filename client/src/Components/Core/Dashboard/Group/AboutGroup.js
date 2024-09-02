@@ -39,11 +39,12 @@ function AboutGroup() {
       ])
       
       setGroup(groupRes.group)
+      console.log(dailyExpense)
       setRecentExpenses(recentExpenses.data)
       setDailyExpenseData(dailyExpense.data)
       setMonthlyexpenseData(monthlyExpense.data)
     } catch (error) {
-      console.log("Error occured while fetching data for about group page", error.message)
+      console.log("Error occured while fetching data for about group page", error)
     }
     finally{
       toast.dismiss(toastId);

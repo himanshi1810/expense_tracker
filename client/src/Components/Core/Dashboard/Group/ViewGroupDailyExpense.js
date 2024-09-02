@@ -66,7 +66,7 @@ function ViewGroupDailyExpense({groupId, expenseData}) {
     )}
     {!loading && expenseData.length==0 && (
         <div className='h-full text-[16px] text-gray-400 flex justify-center items-center'>
-                You haven't created expense yet
+                You do not have any expense since past one month
         </div>
     )}
 </div>
