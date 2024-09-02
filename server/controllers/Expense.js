@@ -15,7 +15,6 @@ exports.addExpense = async (req, res) => {
         const { expenseName, expenseDescription, groupId, expenseAmount, expenseType } = req.body;
         const expenseFrom = req.user.id;
         let expenseTo = req.body.expenseTo;
-  
         console.log(expenseFrom, " ", groupId, " ", expenseTo, "", expenseAmount, " ", expenseDescription);
         if (!expenseFrom || !groupId || !expenseTo || !expenseAmount || !expenseName || !expenseDescription) {
             return res.status(400).json({
@@ -395,7 +394,7 @@ exports.viewGroupMonthlyExpenses = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Group monthly expenses fetched successfully123",
+            message: "Group monthly expenses fetched successfully",
             data: expenseData
         });
     } catch (error) {

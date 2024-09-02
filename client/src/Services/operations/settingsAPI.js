@@ -14,7 +14,7 @@ const {
 
 export function updateDisplayPicture(token, formData) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    //const toastId = toast.loading("Loading...")
     try {
       const response = await apiConnector(
         "PUT",
@@ -39,14 +39,14 @@ export function updateDisplayPicture(token, formData) {
       console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error)
       toast.error("Could Not Update Display Picture")
     }
-    toast.dismiss(toastId)
+    //toast.dismiss(toastId)
   }
 }
 
 
 export function updateProfile(token, profileData) {
     return async (dispatch) => {
-      const toastId = toast.loading("Loading...");
+      //const toastId = toast.loading("Loading...");
       try {
         const { firstName, lastName, email } = profileData;
   
@@ -68,13 +68,13 @@ export function updateProfile(token, profileData) {
         console.log("UPDATE_PROFILE_API API ERROR............", error);
         toast.error("Could Not Update Profile");
       }
-      toast.dismiss(toastId);
+      //toast.dismiss(toastId);
     };
 }
    
 
 export async function changePassword(token, formData) {
-  const toastId = toast.loading("Loading...")
+  //const toastId = toast.loading("Loading...")
   try {
     const response = await apiConnector("POST", CHANGE_PASSWORD_API, formData, {
       Authorization: `Bearer ${token}`,
@@ -89,12 +89,12 @@ export async function changePassword(token, formData) {
     console.log("CHANGE_PASSWORD_API API ERROR............", error)
     toast.error(error.response.data.message)
   }
-  toast.dismiss(toastId)
+  //toast.dismiss(toastId)
 }
 
 export function deleteProfile(token, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    //const toastId = toast.loading("Loading...")
     try {
       const response = await apiConnector("DELETE", DELETE_PROFILE_API, null, {
         Authorization: `Bearer ${token}`,
@@ -110,6 +110,6 @@ export function deleteProfile(token, navigate) {
       console.log("DELETE_PROFILE_API API ERROR............", error)
       toast.error("Could Not Delete Profile")
     }
-    toast.dismiss(toastId)
+    //toast.dismiss(toastId)
   }
 }

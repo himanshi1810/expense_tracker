@@ -8,6 +8,7 @@ import DeleteGroup from "./DeleteGroup";
 import ViewGroupMember from "./ViewGroupMember";
 import UpdateGroupImage from "./UpdateGroupImage";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function UpdateGroup() {
 
@@ -17,8 +18,7 @@ export default function UpdateGroup() {
   const dispatch = useDispatch();
   let { id } = useParams();
   
-  console.log(id)
-
+  console.log("group data", group)
   const {
     register,
     handleSubmit,
@@ -26,40 +26,45 @@ export default function UpdateGroup() {
   } = useForm();
 
   const submitGroupForm = async (data) => { 
-    console.log("Form Data - ", data)
-
-    try {
-      console.log(id)
-      dispatch(updateGroup(token,data,id)); 
-      
-    } catch (error) {
-      console.log('ERROR MESSAGE - ', error.message);
-
+    console.log("Update Data", data)
+    if(data.groupName==group.groupName && data.groupDescription==group.groupDescription){
+      toast.error("You have entered the same data")
     }
+    else{
+      try {
+        console.log(id)
+        dispatch(updateGroup(token,data,id)); 
+        
+      } catch (error) {
+        console.log('ERROR MESSAGE - ', error.message);
+  
+      }
+    }
+    
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center">
     {/* group Image */}
       <UpdateGroupImage/>
     {/* Update Group */}
-      <form onSubmit={handleSubmit(submitGroupForm)}>
+      <form onSubmit={handleSubmit(submitGroupForm)} className="w-[90%] md:w-[70%] self-center">
         {/* Group Information */}
         <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-gray-500 p-8 px-12">
           <h2 className="text-lg font-semibold text-white-100">Basic Details</h2>
        
-            <div className="flex flex-col gap-2 ">
-              <label>
+            <div className="flex flex-col gap-2">
+              <label className="flex flex-col gap-2">
                 <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
-                  Group Name <sup className="text-white-100">*</sup>
+                  Group Name
                 </p>
                 <input
                   type="text"
                   name="groupName"
                   id="groupName"
-                  placeholder="Enter group name"
-                  className="form-style w-full bg-gray-400 text-white-100 py-2 rounded-lg px-2"
-                  {...register("groupName", { required: true })}
+                  placeholder={group?.groupName}
+                  className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] text-gray-100 w-[100%] border-gray-500 px-3 py-2 rounded-md'
+                  {...register("groupName")}
                   defaultValue={group?.groupName}
                 />
               </label>
@@ -68,15 +73,15 @@ export default function UpdateGroup() {
               )}
             </div>
             <div className="flex flex-col gap-2 ">
-              <label>
+              <label className="flex flex-col gap-2">
                 <p className="mb-1 text-[1rem] leading-[1.375rem] text-white-100">
-                  Group Description <sup className="text-white-100">*</sup>
+                  Group Description
                 </p>
                 <textarea
                   id='groupDescription'
-                  {...register("groupDescription", { required: true })}
-                  placeholder='Write your description here'
-                  className='form-style w-full bg-gray-400 text-white-100 py-2 rounded-lg px-2'
+                  {...register("groupDescription")}
+                  placeholder={group?.groupDescription}
+                  className='bg-black-400 border-[0.5px] focus:outline-none text-[14px] text-gray-100 w-[100%] border-gray-500 px-3 py-2 rounded-md'
                   defaultValue={group?.groupDescription}
                 />
 
@@ -107,6 +112,6 @@ export default function UpdateGroup() {
       {/* Delete The Group */}
       <DeleteGroup/>
 
-    </>
+    </div>
   );
 }

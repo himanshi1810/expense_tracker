@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { MdOutlineBrowserUpdated } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { IoIosPersonAdd } from "react-icons/io";
@@ -15,6 +15,7 @@ import AddMemberModal from './Modals/AddMemberModal';
 import CreateExpenseModal from './Modals/CreateExpenseModal';
 import { viewGroup } from '../../../../Services/operations/group';
 import { formatDate } from '../../../../Utils/DateFormatter';
+import { setGroupData } from '../../../../Reducer/Slices/groupSlice';
 function AboutGroup() {
   const {token} = useSelector((state) => state.auth);
   let {id} = useParams();
@@ -25,8 +26,18 @@ function AboutGroup() {
   const [loading, setLoading] = useState(false);
   const [addExpenseModal, setAddExpenseModal] = useState(false);
   const [addMemberModal, setAddMemberModal] = useState(false);
+  const dispatch = useDispatch();
   const nevigate = useNavigate();
+  const [groupOwner, setGroupOwner] = useState("");
   const [group, setGroup] = useState(null);
+  const onUpdateClick = () => {
+    if(group){
+      dispatch(setGroupData(group))
+      nevigate(`/dashboard/aboutGroup/updateGroup/${group._id}`)
+    }else{
+      toast.error("Group do not exist yet")
+    }
+  }
   const fetchData = async() => {
     const toastId = toast.loading("Loading....");
     setLoading(true);
@@ -39,7 +50,7 @@ function AboutGroup() {
       ])
       
       setGroup(groupRes.group)
-      console.log(dailyExpense)
+      setGroupOwner(group.groupMembers.filter((member)=>member._id == group.groupOwner))
       setRecentExpenses(recentExpenses.data)
       setDailyExpenseData(dailyExpense.data)
       setMonthlyexpenseData(monthlyExpense.data)
@@ -55,7 +66,9 @@ function AboutGroup() {
     fetchData();
   },[addExpenseModal, addMemberModal])  
   if(!group){
-    return <div className='loader'></div>
+    return <div className='h-[calc(70vh-1rem)] flex justify-center items-center'>
+      <div className='loader'></div>
+    </div>
   }
   
   return (
@@ -66,7 +79,7 @@ function AboutGroup() {
         </div>
 
         <div className='flex -mt-3 gap-5 justify-center flex-wrap md:justify-end items-center'>
-          <button onClick={() => (nevigate(`/dashboard/aboutGroup/updateGroup/${group._id}`))} className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700 justify-center items-center px-4 py-1 rounded-md'>
+          <button onClick={() => onUpdateClick()}className='flex gap-1 text-[14px] text-white-100 hover:border hover:border-gray-500 hover:bg-black-400 hover:scale-90 transition-all duration-500 shadow-sm shadow-gray-600 border border-gray-600 bg-gray-700 justify-center items-center px-4 py-1 rounded-md'>
             <MdOutlineBrowserUpdated className='text-[15px]'/>
            <p>Update</p>
           </button>
@@ -93,14 +106,14 @@ function AboutGroup() {
           </div> 
 
           <div className='flex flex-col gap-5'>
-              <div className='flex flex-col gap-3 border text-gray-400 border-gray-500 h-[20.3rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
-                <div>Owner : {group.groupOwber}</div>
+              <div className='flex flex-col gap-3 border text-white border-gray-500 h-[20.3rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
+                {groupOwner && <div>Owner : {groupOwner[0].firstName}  {groupOwner[0].lastName} </div>}
                 <div>Created On : {formatDate(group.createdAt)}</div>
                 <div>Group Total : {group.groupTotal}</div>
                 <div>Description : {group.groupDescription}</div>
                 <div>Currency : {group.groupCurrency}</div>
               </div>
-              <div className='flex flex-col gap-6 border border-gray-500 h-[20.3rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
+              <div className='flex flex-col gap-6 border border-gray-500 h-[22rem] overflow-y-auto rounded-md px-7 py-5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500'>
                   <p className='text-white-100 text-[15px]'>Group Members</p>
                   {
                     group.groupMembers.map((member, index)=>(
@@ -130,7 +143,7 @@ function AboutGroup() {
         addMemberModal && (<AddMemberModal id={id} groupName={group.groupName} groupMembers={group.groupMembers} setAddMemberModal={setAddMemberModal}></AddMemberModal>)
       }
       {
-        addExpenseModal && (<CreateExpenseModal setAddExpenseModal={setAddExpenseModal}></CreateExpenseModal>)
+        addExpenseModal && (<CreateExpenseModal setAddExpenseModal={setAddExpenseModal} groupMembers={group.groupMembers}></CreateExpenseModal>)
       }
     </div>
   )

@@ -11,25 +11,23 @@ html, body{
   overflow-x: hidden;
 
 }
+/* HTML: <div class="loader"></div> */
 .loader {
-  --d:22px;
-  width: 4px;
-  height: 4px;
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
   border-radius: 50%;
-  color: rgba(92,133,231,1);
-  box-shadow: 
-    calc(1*var(--d))      calc(0*var(--d))     0 0,
-    calc(0.707*var(--d))  calc(0.707*var(--d)) 0 1px,
-    calc(0*var(--d))      calc(1*var(--d))     0 2px,
-    calc(-0.707*var(--d)) calc(0.707*var(--d)) 0 3px,
-    calc(-1*var(--d))     calc(0*var(--d))     0 4px,
-    calc(-0.707*var(--d)) calc(-0.707*var(--d))0 5px,
-    calc(0*var(--d))      calc(-1*var(--d))    0 6px;
-  animation: l27 1s infinite steps(8);
+  background: #3B63FF;
+  --_m: 
+    conic-gradient(#0000 10%,#000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
 }
-@keyframes l27 {
-  100% {transform: rotate(1turn)}
-}
+@keyframes l3 {to{transform: rotate(1turn)}}
 input::selection {
   background-color: transparent; /* No change */
   color: #ffffff; /* Maintain white text */
@@ -49,3 +47,36 @@ input::selection {
     background-color: inherit; /* Inherit the background color */
     color: inherit; /* Inherit the text color */
 }
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between checkbox and label */
+}
+input[type="checkbox"] {
+  /* Hide default checkbox */
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: 0B0D10; /* Black background by default */
+  border: 1px solid #565656; /* Gray border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  position: relative;
+}
+input[type="checkbox"]:checked {
+  background-color: #3B63FF; /* Blue background when checked */
+  border-color: #3B63FF; /* Change border color when checked */
+}
+input[type="checkbox"]:checked::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 4px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+

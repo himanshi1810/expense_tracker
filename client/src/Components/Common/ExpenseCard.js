@@ -20,16 +20,16 @@ function ExpenseCard({expense}) {
             <p>{expense?.expenseName}</p>
             <p>{expense?.expensePerMember}₹</p>
         </div>
-        <div className='text-gray-400 text-[14px]'>
+        <div className='text-white-100 text-[14px]'>
             <p> Group Name : <spin>{expense?.groupId?.groupName}</spin></p>
         </div>
-        <div className='text-gray-400 text-[14px]'>
+        <div className='text-white-100 text-[14px]'>
             <p>  Date : <spin>{date}</spin></p>
         </div>
-        <div className='text-gray-400 text-[14px]'>
+        <div className='text-white-100 text-[14px]'>
             <p>  About : <spin>{expense?.expenseDescription}</spin></p>
         </div>
-        <div className='text-gray-400 text-[14px] gap-2 flex justify-between'>
+        <div className='text-white-100 text-[14px] gap-2 flex justify-between'>
             <p>  Expense Currency : <spin>{expense?.expenseCurrency}</spin></p>
             <p>  Expense Type : <spin>{expense?.expenseType}</spin></p>
         </div>

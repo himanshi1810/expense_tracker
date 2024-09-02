@@ -178,13 +178,7 @@ exports.updateGroup = async (req, res) => {
         const responseData = {
             success: true,
             message: "User profile updated successfully",
-            updatedUserDetails: {
-                _id: group._id,
-                groupName: group.groupName,
-                groupDescription: group.groupDescription,
-            
-            
-            }
+            updatedGroupDetails: group  
         };
 
         res.status(200).json(responseData);

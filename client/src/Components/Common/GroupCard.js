@@ -1,6 +1,9 @@
 import React from 'react'
+import { formatDate } from '../../Utils/DateFormatter'
 
 function GroupCard({group}) {
+    const groupOwner = group.groupMembers.filter((member)=>member._id===group.groupOwner)
+    const date = formatDate(group.createdAt)
   return (
     <div className='flex items-center gap-7 flex-col md:flex-row mr-3 md:w-[100%] px-7 py-5 border border-gray-500 rounded-md'>
         <div>
@@ -15,10 +18,10 @@ function GroupCard({group}) {
                 <p>Descripton : <span>{group.groupDescription}</span></p>
             </div>
             <div className='flex flex-wrap'>
-                <p>Group Owner : <span className=''>{group.groupOwner}</span></p>
+                <p>Group Owner : <span className=''>{groupOwner[0].firstName} {groupOwner[0].lastName}</span></p>
             </div>
             <div className='flex flex-wrap'>
-                <p>Created At : <span> {group.createdAt}</span></p>
+                <p>Created At : <span> {date}</span></p>
             </div>
         </div>
     </div>

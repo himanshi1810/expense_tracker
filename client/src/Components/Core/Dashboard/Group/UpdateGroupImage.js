@@ -61,16 +61,16 @@ export default function UpdateGroupImage() {
     <>
 <div className="flex items-center justify-center rounded-md p-8 px-12 text-white-100 relative">
   <div className="flex items-center gap-x-4 flex-col">
-    <div className="relative aspect-square w-[78px] rounded-full overflow-hidden">
+    <div className="relative flex justify-center items-center aspect-square w-[9rem] rounded-full overflow-hidden">
      
           <img
           src={previewSource || group?.groupImage}
           alt={`group-${group?.groupName}`}
-          className="w-full h-full object-cover rounded-full border border-gray-200 z-0"
+          className="w-[7rem] rounded-full border border-gray-200 z-0"
         />
         <div className=" flex items-center justify-center ">
           <label htmlFor="fileInput">
-            <div className="absolute bottom-2 right-2 rounded-full bg-blue-500 p-1 shadow-md z-20 cursor-pointer">  <FiEdit2 className="text-white text-lg" />
+            <div className="absolute bottom-5 right-6 rounded-full bg-blue-500 p-1 shadow-md z-20 cursor-pointer">  <FiEdit2 className="text-white text-lg" />
             </div>
           </label>
         </div>

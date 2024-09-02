@@ -22,6 +22,7 @@ export const addExpense = async (data, token, id) => {
     let result = null;
     const toastId = toast.loading("Loading...");
     try {
+        //console.log("Data", data) 
         const response = await apiConnector("POST", ADD_EXPENSE_API.replace('${group._id}', id), data, {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
@@ -89,7 +90,7 @@ export const deleteExpense = async (data, token) => {
 //View Expense
 export const viewExpense = async (data, token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("GET", VIEW_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
@@ -103,7 +104,7 @@ export const viewExpense = async (data, token) => {
         console.log("Error occurred while fetching expense details:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
@@ -111,7 +112,7 @@ export const viewExpense = async (data, token) => {
 export const viewGroupDailyExpenses = async (data, token) => {
     let result = null;
 
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST",VIEW_GROUP_DAILY_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
@@ -126,14 +127,14 @@ export const viewGroupDailyExpenses = async (data, token) => {
         console.log("Error occurred while fetching group daily expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 //View Group Monthly Expense 
 export const viewGroupMonthlyExpenses = async (data, token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         console.log("Token", token)
         const response = await apiConnector("POST", VIEW_GROUP_MONTHLY_EXPENSE_API, data, {
@@ -148,14 +149,14 @@ export const viewGroupMonthlyExpenses = async (data, token) => {
         console.log("Error occurred while fetching group monthly expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 //View Group Total Expense
 export const groupTotalExpense = async (data, token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("GET", GROUP_TOTAL_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
@@ -169,14 +170,14 @@ export const groupTotalExpense = async (data, token) => {
         console.log("Error occurred while fetching group total expense:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 //View User Expense
 export const viewUserExpense = async (token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     
     try {
         const response = await apiConnector("POST", VIEW_USER_EXPENSE_API, {}, {
@@ -191,14 +192,14 @@ export const viewUserExpense = async (token) => {
         console.log("Error occurred while fetching user expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 //View Recent user expense
 export const viewRecentUserExpense = async (data, token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", VIEW_RECENT_USER_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
@@ -212,14 +213,14 @@ export const viewRecentUserExpense = async (data, token) => {
         console.log("Error occurred while fetching recent user expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 //View User Monthly Expense
 export const viewUserMonthlyExpense = async (token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", VIEW_USER_MONTHLY_EXPENSE_API, {}, {
             Authorization: `Bearer ${token}`,
@@ -233,14 +234,14 @@ export const viewUserMonthlyExpense = async (token) => {
         console.log("Error occurred while fetching user monthly expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 //View User Daily Expense
 export const viewUserDailyExpense = async (data, token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST",VIEW_USER_DAILY_EXPENSE_API, data, {
             Authorization: `Bearer ${token}`,
@@ -254,13 +255,13 @@ export const viewUserDailyExpense = async (data, token) => {
         console.log("Error occurred while fetching user daily expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 export const viewGroupRecentExpense = async (data, token) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
         const response = await apiConnector("POST", VIEW_GROUP_RECENT_EXPENSES_API, data, {
             Authorization: `Bearer ${token}`,
@@ -274,13 +275,13 @@ export const viewGroupRecentExpense = async (data, token) => {
         console.log("Error occurred while fetching group recent expenses:", error);
         toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
 export const fetchGroupMembers = async (token, id) => {
     let result = null;
-    const toastId = toast.loading("Loading...");
+    //const toastId = toast.loading("Loading...");
     try {
       const response = await apiConnector("GET", FETCH_GROUP_MEMBERS_API.replace('${group._id}', id), null, {
         "Content-Type": "application/json",
@@ -296,7 +297,7 @@ export const fetchGroupMembers = async (token, id) => {
       console.log("Error occurred while fetching group members:", error);
       toast.error(error.message);
     }
-    toast.dismiss(toastId);
+    //toast.dismiss(toastId);
     return result;
 };
 
