@@ -59,10 +59,10 @@ function GroupMonthlyExpenseGraph({groupId, expenseData}) {
     };
 
     return (
-        <div className='md:h-[20.3rem] border border-gray-500 rounded-md px-7 py-3'>
+        <div className='md:h-[22rem] border border-gray-500 rounded-md px-7 py-3'>
             <p className='text-[16px] text-white-100'>User Monthly Expense Statistics</p>
             {!loading && expenseData.length > 0 && (
-                <Line options={options} className='' data={data} />
+                <Line mt-2 options={options} className='' data={data} />
             )}
             {!loading && expenseData.length==0 && (
                 <div className='h-full text-[16px] text-gray-400 flex justify-center items-center'>

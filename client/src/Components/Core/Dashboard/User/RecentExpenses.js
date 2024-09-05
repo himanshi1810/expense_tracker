@@ -24,7 +24,7 @@ function RecentExpenses() {
     }, [])
     if(loading){
         return(
-            <div className='loader'></div>
+            <div className='flex justify-center items-center h-[calc(70vh-2rem)]'></div>
         )
     }
   return (

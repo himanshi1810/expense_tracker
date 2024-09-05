@@ -86,7 +86,7 @@ const {
   }
   export function login(email, password, navigate) {
     return async (dispatch) => {
-      const toastId = toast.loading("Loading...")
+      //const toastId = toast.loading("Loading...")
       dispatch(setLoading(true))
       try {
         const response = await apiConnector("POST", LOGIN_API, {
@@ -122,7 +122,7 @@ const {
         }
       }
       dispatch(setLoading(false))
-      toast.dismiss(toastId)
+      //toast.dismiss(toastId)
     }
   }   
   export function logout(navigate) {

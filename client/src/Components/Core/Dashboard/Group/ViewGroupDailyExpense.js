@@ -59,7 +59,7 @@ function ViewGroupDailyExpense({groupId, expenseData}) {
   };
 
   return (
-    <div className='sm:[15rem] md:h-[20.3rem] border border-gray-500 rounded-md px-7 py-3'>
+    <div className='sm:[15rem] md:h-[22rem] border border-gray-500 rounded-md px-7 py-3'>
     <p className='text-[16px] text-white-100'>User Daily Expense Statistics</p>
     {!loading && expenseData.length > 0 && (
         <Line options={options} className='sm:[15rem] md:h-[20.3rem]' data={data} />
